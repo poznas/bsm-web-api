@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.2.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bsm</groupId>
     <artifactId>open-api</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7-SNAPSHOT</version>
     <name>bsm-open-api</name>
     <description>BSM Open REST API</description>
     <url>https://github.com/poznas/bsm-open-api</url>
@@ -26,19 +27,8 @@
         <url>https://github.com/poznas/bsm-open-api</url>
         <connection>scm:git:https://github.com/poznas/bsm-open-api</connection>
         <developerConnection>scm:git:https://github.com/poznas/bsm-open-api</developerConnection>
-        <tag>v0.0.6</tag>
+        <tag>v0.0.1</tag>
     </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>local-repo</id>
-            <url>http://localhost:8080/plugin/repository/everything</url>
-        </repository>
-        <snapshotRepository>
-            <id>local-repo</id>
-            <url>http://localhost:8080/plugin/repository/everything</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <properties>
         <java.version>11</java.version>
