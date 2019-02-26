@@ -1,0 +1,40 @@
+# Server configuration
+server:
+  port: 5000
+  servlet:
+    context-path: /api
+
+
+# Spring Boot configuration
+spring:
+  application:
+    name: AGHydra
+  profiles:
+    active: development
+# Database
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: postgres
+#    password: postgres
+#  jpa:
+#    database: POSTGRESQL
+#    generate-ddl: true
+#    show-sql: true
+#  output:
+#    ansi:
+#      enabled: always
+  flyway:
+    enabled: false
+  jackson:
+    default-property-inclusion: non_null
+
+#My batis
+mybatis:
+  mapper-locations: classpath*:mappers/*.xml
+
+# Logger configuration
+logging:
+  level:
+    org.springframework: INFO
+    com.agh.hydra: DEBUG
