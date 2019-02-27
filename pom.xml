@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.2.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bsm</groupId>
     <artifactId>open-api</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.11-SNAPSHOT</version>
     <name>bsm-open-api</name>
     <description>BSM Open REST API</description>
     <url>https://github.com/poznas/bsm-open-api</url>
@@ -27,7 +26,7 @@
         <url>https://github.com/poznas/bsm-open-api</url>
         <connection>scm:git:https://github.com/poznas/bsm-open-api</connection>
         <developerConnection>scm:git:https://github.com/poznas/bsm-open-api</developerConnection>
-        <tag>v0.0.1</tag>
+        <tag>v0.0.11</tag>
     </scm>
 
     <properties>
@@ -105,6 +104,13 @@
     </dependencyManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>com.gkatzioura.maven.cloud</groupId>
+                <artifactId>s3-storage-wagon</artifactId>
+                <version>1.0</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -122,7 +128,22 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>repo.bsm.pub</id>
+            <url>s3://repo.bsm.pub/snapshot</url>
+        </snapshotRepository>
+        <repository>
+            <id>repo.bsm.pub</id>
+            <url>s3://repo.bsm.pub/release</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
+        <repository>
+            <id>repo.bsm.pub</id>
+            <url>s3://repo.bsm.pub/release</url>
+        </repository>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
