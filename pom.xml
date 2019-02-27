@@ -104,13 +104,6 @@
     </dependencyManagement>
 
     <build>
-        <extensions>
-            <extension>
-                <groupId>com.gkatzioura.maven.cloud</groupId>
-                <artifactId>s3-storage-wagon</artifactId>
-                <version>1.0</version>
-            </extension>
-        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -123,6 +116,7 @@
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <preparationGoals>clean install</preparationGoals>
                 </configuration>
             </plugin>
         </plugins>
