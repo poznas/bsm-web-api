@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.bsm</groupId>
     <artifactId>open-api</artifactId>
-    <version>0.0.11</version>
+    <version>0.0.12-SNAPSHOT</version>
     <name>bsm-open-api</name>
     <description>BSM Open REST API</description>
     <url>https://github.com/poznas/bsm-open-api</url>
