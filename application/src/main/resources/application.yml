@@ -8,7 +8,7 @@ server:
 # Spring Boot configuration
 spring:
   application:
-    name: AGHydra
+    name: Open-Api
   profiles:
     active: development
 # Database
