@@ -36,11 +36,11 @@
                 <version>5.2.0</version>
                 <configuration>
                     <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/postgres</url>
-                    <user>postgres</user>
-                    <password>postgres</password>
+                    <url>jdbc:postgresql://db.bsm.pub:5432/core</url>
+                    <user>bsm_core</user>
+                    <password>bsm_core</password>
                     <schemas>
-                        <schema>hydra</schema>
+                        <schema>public</schema>
                     </schemas>
                     <locations>
                         <location>versioned_0</location>
@@ -49,6 +49,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

@@ -14,9 +14,9 @@ spring:
 # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://db.bsm.pub:5432/core
+    username: bsm_core
+    password: bsm_core
   jpa:
     database: POSTGRESQL
     generate-ddl: true
@@ -37,4 +37,5 @@ mybatis:
 logging:
   level:
     org.springframework: INFO
-    com.agh.hydra: DEBUG
+    com.bsm: DEBUG
+  path: /logs
