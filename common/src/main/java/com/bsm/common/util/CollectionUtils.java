@@ -15,11 +15,11 @@ import static java.util.stream.Collectors.toSet;
 @UtilityClass
 public class CollectionUtils {
 
-     public static <T, E> List<T> mapList(Collection<E> collection, Function<E, T> function){
-         return ofNullable(collection).orElse(emptyList()).stream().map(function).collect(toList());
-     }
+  public static <T, E> List<T> mapList(Collection<E> collection, Function<E, T> function) {
+    return ofNullable(collection).orElse(emptyList()).stream().map(function).collect(toList());
+  }
 
-    public static <T, E> Set<T> mapSet(Collection<E> collection, Function<E, T> function){
-        return ofNullable(collection).orElse(emptyList()).stream().map(function).collect(toSet());
-    }
+  public static <T, E> Set<T> mapSet(Collection<E> collection, Function<E, T> function) {
+    return ofNullable(collection).orElse(emptyList()).stream().map(function).collect(toSet());
+  }
 }

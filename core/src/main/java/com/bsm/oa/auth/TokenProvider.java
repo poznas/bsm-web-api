@@ -25,46 +25,46 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class TokenProvider {
 
-    private static final String AUTHORITIES_KEY = "auth";
+  private static final String AUTHORITIES_KEY = "auth";
 
-    @Value("${spring.security.authentication.jwt.validity}")
-    private long tokenValidityInMilliSeconds;
+  @Value("${spring.security.authentication.jwt.validity}")
+  private long tokenValidityInMilliSeconds;
 
-    @Value("${spring.security.authentication.jwt.secret}")
-    private String secret;
+  @Value("${spring.security.authentication.jwt.secret}")
+  private String secret;
 
-    public String createToken(Authentication authentication) {
+  public String createToken(Authentication authentication) {
 
-        String authorities = Joiner.on(',')
-                .join(mapList(authentication.getAuthorities(), GrantedAuthority::getAuthority));
+    String authorities = Joiner.on(',')
+      .join(mapList(authentication.getAuthorities(), GrantedAuthority::getAuthority));
 
-        var now = ZonedDateTime.now();
-        var expirationDateTime = now.plus(this.tokenValidityInMilliSeconds, MILLIS);
+    var now = ZonedDateTime.now();
+    var expirationDateTime = now.plus(this.tokenValidityInMilliSeconds, MILLIS);
 
-        var issueDate = Date.from(now.toInstant());
-        var expirationDate = Date.from(expirationDateTime.toInstant());
+    var issueDate = Date.from(now.toInstant());
+    var expirationDate = Date.from(expirationDateTime.toInstant());
 
-        return Jwts.builder()
-                .signWith(HS512, secret)
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
-                .setExpiration(expirationDate)
-                .setIssuedAt(issueDate)
-                .compact();
-    }
+    return Jwts.builder()
+      .signWith(HS512, secret)
+      .setSubject(authentication.getName())
+      .claim(AUTHORITIES_KEY, authorities)
+      .setExpiration(expirationDate)
+      .setIssuedAt(issueDate)
+      .compact();
+  }
 
-    public Authentication getAuthentication(String token) {
+  public Authentication getAuthentication(String token) {
 
-        var claims = Jwts.parser().setSigningKey(secret)
-                .parseClaimsJws(token).getBody();
+    var claims = Jwts.parser().setSigningKey(secret)
+      .parseClaimsJws(token).getBody();
 
-        Collection<GrantedAuthority> authorities =
-                stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(toList());
+    Collection<GrantedAuthority> authorities =
+      stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+        .map(SimpleGrantedAuthority::new)
+        .collect(toList());
 
-        var principal = new User(claims.getSubject(), "", authorities);
+    var principal = new User(claims.getSubject(), "", authorities);
 
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
-    }
+    return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+  }
 }
