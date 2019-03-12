@@ -1,9 +1,17 @@
 package com.bsm.oa.auth;
 
+import static com.bsm.oa.common.util.CollectionUtils.mapList;
+import static io.jsonwebtoken.SignatureAlgorithm.HS512;
+import static java.time.temporal.ChronoUnit.MILLIS;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+
 import com.google.api.client.util.Joiner;
 import io.jsonwebtoken.Jwts;
+import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,27 +19,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.Date;
-
-import static com.bsm.common.util.CollectionUtils.mapList;
-import static io.jsonwebtoken.SignatureAlgorithm.HS512;
-import static java.time.temporal.ChronoUnit.MILLIS;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
-
 @Slf4j
 @Component
 public class TokenProvider {
 
   private static final String AUTHORITIES_KEY = "auth";
+  private static final long VALIDITY_MILLISECONDS = 864_000_000;
 
-  @Value("${spring.security.authentication.jwt.validity}")
-  private long tokenValidityInMilliSeconds;
-
-  @Value("${spring.security.authentication.jwt.secret}")
-  private String secret;
+  private String secret = "tmp";
 
   public String createToken(Authentication authentication) {
 
@@ -39,7 +34,7 @@ public class TokenProvider {
       .join(mapList(authentication.getAuthorities(), GrantedAuthority::getAuthority));
 
     var now = ZonedDateTime.now();
-    var expirationDateTime = now.plus(this.tokenValidityInMilliSeconds, MILLIS);
+    var expirationDateTime = now.plus(VALIDITY_MILLISECONDS, MILLIS);
 
     var issueDate = Date.from(now.toInstant());
     var expirationDate = Date.from(expirationDateTime.toInstant());

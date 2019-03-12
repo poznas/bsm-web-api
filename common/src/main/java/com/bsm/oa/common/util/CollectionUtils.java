@@ -1,16 +1,15 @@
-package com.bsm.common.util;
-
-import lombok.experimental.UtilityClass;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
+package com.bsm.oa.common.util;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class CollectionUtils {

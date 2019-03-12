@@ -13,17 +13,18 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.bsm</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.24-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bsm</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.24-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,6 @@
 package com.bsm.oa.auth.service;
 
-import com.bsm.common.model.User;
-
+import com.bsm.oa.common.model.User;
 import javax.validation.constraints.NotBlank;
 
 public interface TokenVerifier {
