@@ -8,9 +8,13 @@ import static java.util.stream.Collectors.toList;
 
 import com.google.api.client.util.Joiner;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import java.time.ZonedDateTime;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
+import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +30,9 @@ public class TokenProvider {
   private static final String AUTHORITIES_KEY = "auth";
   private static final long VALIDITY_MILLISECONDS = 864_000_000;
 
-  private String secret = "tmp";
+  private static final SecretKey secretKey = MacProvider.generateKey(SignatureAlgorithm.HS256);
+  private static final byte[] secretBytes = secretKey.getEncoded();
+  private static final String SECRET = Base64.getEncoder().encodeToString(secretBytes);
 
   public String createToken(Authentication authentication) {
 
@@ -40,7 +46,7 @@ public class TokenProvider {
     var expirationDate = Date.from(expirationDateTime.toInstant());
 
     return Jwts.builder()
-      .signWith(HS512, secret)
+      .signWith(HS512, SECRET)
       .setSubject(authentication.getName())
       .claim(AUTHORITIES_KEY, authorities)
       .setExpiration(expirationDate)
@@ -50,7 +56,7 @@ public class TokenProvider {
 
   public Authentication getAuthentication(String token) {
 
-    var claims = Jwts.parser().setSigningKey(secret)
+    var claims = Jwts.parser().setSigningKey(SECRET)
       .parseClaimsJws(token).getBody();
 
     Collection<GrantedAuthority> authorities =

@@ -23,8 +23,12 @@
         <dependency>
             <groupId>com.bsm</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.24-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bsm</groupId>
+            <artifactId>user</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

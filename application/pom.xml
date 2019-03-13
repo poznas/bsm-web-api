@@ -12,7 +12,12 @@
         <dependency>
             <groupId>com.bsm</groupId>
             <artifactId>core</artifactId>
-            <version>0.0.24-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bsm</groupId>
+            <artifactId>user</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

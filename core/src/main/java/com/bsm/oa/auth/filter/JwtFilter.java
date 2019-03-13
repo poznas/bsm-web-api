@@ -1,5 +1,7 @@
 package com.bsm.oa.auth.filter;
 
+import static com.bsm.oa.auth.Headers.HEADER_AUTHORIZATION;
+import static com.bsm.oa.auth.Headers.TOKEN_PREFIX;
 import static java.util.Optional.ofNullable;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
@@ -24,9 +26,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Setter
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-
-  private static final String HEADER_AUTHORIZATION = "Authorization";
-  private static final String TOKEN_PREFIX = "Bearer";
 
   private static final SecurityContext securityContext = SecurityContextHolder.getContext();
 
