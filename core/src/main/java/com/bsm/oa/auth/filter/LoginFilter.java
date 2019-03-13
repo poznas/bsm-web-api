@@ -10,24 +10,28 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
-@RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
   private static final String HEADER_ID_TOKEN = "X-ID-TOKEN";
 
-  private final UserDetailsService userDetailsService;
   private final TokenProvider tokenProvider;
   private final TokenVerifier tokenVerifier;
 
+  public LoginFilter(TokenProvider tokenProvider, TokenVerifier tokenVerifier,
+                     AuthenticationManager manager) {
+    super();
+    this.tokenProvider = tokenProvider;
+    this.tokenVerifier = tokenVerifier;
+    setAuthenticationManager(manager);
+  }
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request,
