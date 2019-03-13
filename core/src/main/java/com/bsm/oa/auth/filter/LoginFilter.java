@@ -8,36 +8,29 @@ import com.bsm.oa.common.model.User;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.lang.NonNull;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
-public class LoginFilter extends UsernamePasswordAuthenticationFilter {
+@RequiredArgsConstructor
+@WebFilter(urlPatterns = "/login")
+public class LoginFilter extends OncePerRequestFilter {
 
   private static final String HEADER_ID_TOKEN = "X-ID-TOKEN";
 
   private final TokenProvider tokenProvider;
   private final TokenVerifier tokenVerifier;
 
-  public LoginFilter(TokenProvider tokenProvider, TokenVerifier tokenVerifier,
-                     AuthenticationManager manager) {
-    super();
-    this.tokenProvider = tokenProvider;
-    this.tokenVerifier = tokenVerifier;
-    setAuthenticationManager(manager);
-  }
-
   @Override
-  public Authentication attemptAuthentication(HttpServletRequest request,
-                                              HttpServletResponse response)
-    throws AuthenticationException {
-
+  protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                  @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
+    throws ServletException, IOException {
     log.debug("Apply login filter : {}", request.getServletPath());
 
     User user;
@@ -46,18 +39,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         .map(tokenVerifier::verifyTokenId)
         .orElseThrow();
     } catch (ResponseStatusException ex) {
-      return null;
     }
 
-    return null;
-  }
-
-  @Override
-  protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                          FilterChain chain,
-                                          Authentication authResult)
-    throws IOException, ServletException {
-    super.successfulAuthentication(request, response, chain, authResult);
-    log.debug("Authentication Success");
   }
 }
