@@ -38,4 +38,8 @@ public class User {
    * image URL address
    */
   private String imageUrl;
+
+  @Valid
+  @NotNull
+  private TeamId teamId;
 }

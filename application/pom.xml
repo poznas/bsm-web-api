@@ -47,7 +47,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>5.2.0</version>
+                <version>${mvn.flyway.plugin.version}</version>
                 <configuration>
                     <driver>org.postgresql.Driver</driver>
                     <url>jdbc:postgresql://db.bsm.pub:5432/core</url>
