@@ -1,5 +1,6 @@
 package com.bsm.oa.auth;
 
+import static com.bsm.oa.common.util.AuthUtil.buildAuthentication;
 import static com.bsm.oa.common.util.CollectionUtils.mapList;
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 import static java.time.temporal.ChronoUnit.MILLIS;
@@ -16,11 +17,9 @@ import java.util.Collection;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -64,8 +63,6 @@ public class TokenProvider {
         .map(SimpleGrantedAuthority::new)
         .collect(toList());
 
-    var principal = new User(claims.getSubject(), "", authorities);
-
-    return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    return buildAuthentication(claims.getSubject(), authorities);
   }
 }

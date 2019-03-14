@@ -11,5 +11,5 @@ create table USERS (
   username varchar(30) not null,
   email varchar(100) not null,
   image_url varchar(500),
-  team_id varchar(15) not null references TEAM(team_id)
+  team_id varchar(15) references TEAM(team_id)
 );
