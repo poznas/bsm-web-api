@@ -55,7 +55,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
   private User buildUser(Payload payload) {
     return User.builder()
       .username(buildUsername(payload))
-      .id(UserId.of(payload.getSubject()))
+      .userId(UserId.of(payload.getSubject()))
       .imageUrl((String) payload.get("picture"))
       .email(payload.getEmail())
       .build();

@@ -20,7 +20,7 @@ public class User {
    */
   @Valid
   @NotNull
-  private UserId id;
+  private UserId userId;
 
   /**
    * Username

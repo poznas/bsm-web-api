@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsm.oa.user.dao.UserRepository">
+
+  <insert id="insertUser" parameterType="com.bsm.oa.common.model.User">
+       insert into USERS (user_id, username, email, image_url)
+              values(#{userId.value}, #{username.value}, #{email}, #{imageUrl});
+     </insert>
+
+  <select id="userExists" parameterType="string" resultType="boolean">
+        select exists (
+          select 1 from USERS
+            where user_id = #{userId.value}
+        )
+    </select>
+
+  <select id="getPrivileges" resultType="com.bsm.oa.common.constant.Privilege">
+        select privilege_id from PRIVILEGE where user_id = #{userId.value}
+    </select>
+
+  <update id="addPrivileges">
+    <foreach collection="privileges" item="privilege" index="index" open="" separator=";" close="">
+      insert into PRIVILEGE (user_id, privilege_id)
+      select #{userId.value}, #{privilege}
+      where not exists (
+      select 1 from PRIVILEGE
+      where user_id = #{userId.value}
+      and privilege_id = #{privilege}
+      )
+    </foreach>
+  </update>
+
+  <delete id="clearPrivileges">
+      delete from PRIVILEGE
+      where user_id = #{userId.value}
+  </delete>
+</mapper>
