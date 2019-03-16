@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.bsm</groupId>
     <artifactId>open-api</artifactId>
-    <version>0.0.24</version>
+    <version>0.0.25-SNAPSHOT</version>
     <name>bsm-open-api</name>
     <description>BSM Open REST API</description>
     <url>https://github.com/poznas/bsm-open-api</url>
@@ -34,7 +34,7 @@
         <url>https://github.com/poznas/bsm-open-api</url>
         <connection>scm:git:https://github.com/poznas/bsm-open-api</connection>
         <developerConnection>scm:git:https://github.com/poznas/bsm-open-api</developerConnection>
-        <tag>open-api-0.0.24</tag>
+        <tag>v0.0.12</tag>
     </scm>
 
     <properties>
