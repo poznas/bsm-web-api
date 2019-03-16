@@ -8,7 +8,7 @@ server:
 # Spring Boot configuration
 spring:
   application:
-    name: Open-Api
+    name: open-api
   profiles:
     active: development
 # Database

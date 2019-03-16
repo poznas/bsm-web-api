@@ -1,0 +1,15 @@
+
+spring:
+  application:
+    name: open-api
+  cloud:
+    vault:
+      token: 00000000-0000-0000-0000-000000000000
+      scheme: http
+      host: 127.0.0.1
+      port: 8200
+      kv.enabled: true
+      generic:
+        application-name: open-api
+        default-context: open-api
+      application-name: open-api
