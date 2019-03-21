@@ -15,6 +15,12 @@
       <artifactId>common</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-cognitoidentity</artifactId>
+      <version>${aws.cognito.identity.version}</version>
+    </dependency>
+
   </dependencies>
 
 </project>
