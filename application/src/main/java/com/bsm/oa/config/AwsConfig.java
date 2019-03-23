@@ -24,6 +24,9 @@ public class AwsConfig {
   @Value("${aws.region}")
   private String region;
 
+  @Value("${aws.tokenDuration}")
+  private long tokenDuration;
+
   @Bean
   public AWSCredentials awsCredentials() {
     return new BasicAWSCredentials(secrets.getAwsAccessKey(), secrets.getAwsSecretKey());
@@ -42,7 +45,7 @@ public class AwsConfig {
   @Bean
   public AwsIdentityService awsIdentityService() {
     return new AwsIdentityServiceImpl(secrets.getAwsIdentityPoolId(),
-      secrets.getAwsIdentityDeveloperProviderName(), amazonCognitoIdentity());
+      secrets.getAwsIdentityDeveloperProviderName(), tokenDuration, amazonCognitoIdentity());
   }
 
 }

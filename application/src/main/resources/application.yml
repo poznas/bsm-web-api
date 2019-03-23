@@ -42,3 +42,5 @@ logging:
 
 aws:
   region: eu-central-1
+  # aws user access token duration
+  tokenDuration: 300

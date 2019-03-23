@@ -1,6 +1,8 @@
 package com.bsm.oa.auth.filter;
 
 import static com.bsm.oa.auth.Headers.HEADER_AUTHORIZATION;
+import static com.bsm.oa.auth.Headers.HEADER_AWS_IDENTITY;
+import static com.bsm.oa.auth.Headers.HEADER_AWS_TOKEN;
 import static com.bsm.oa.auth.Headers.HEADER_ID_TOKEN;
 import static com.bsm.oa.auth.Headers.TOKEN_PREFIX;
 import static java.util.Optional.ofNullable;
@@ -52,6 +54,10 @@ public class LoginFilter extends OncePerRequestFilter {
 
       String bearerToken = tokenProvider.createToken(authentication);
       response.addHeader(HEADER_AUTHORIZATION, TOKEN_PREFIX + " " + bearerToken);
+
+      var awsAccessToken = userService.getOpenIdAccessToken(user.getUserId());
+      response.addHeader(HEADER_AWS_IDENTITY, awsAccessToken.getIdentityId());
+      response.addHeader(HEADER_AWS_TOKEN, awsAccessToken.getToken());
 
       response.setStatus(OK.value());
 

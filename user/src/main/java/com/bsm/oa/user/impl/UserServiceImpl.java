@@ -6,9 +6,13 @@ import static java.util.Collections.emptySet;
 
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
+import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.user.dao.UserRepository;
+import com.bsm.oa.user.model.AwsUserToken;
+import com.bsm.oa.user.service.AwsIdentityService;
 import com.bsm.oa.user.service.UserService;
 import java.util.Collection;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final AwsIdentityService awsIdentityService;
 
   @Override
   public Authentication getUserAuthentication(@NotNull User user) {
@@ -33,5 +38,10 @@ public class UserServiceImpl implements UserService {
     }
 
     return buildAuthentication(getValue(user.getUserId()), privileges);
+  }
+
+  @Override
+  public AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId) {
+    return awsIdentityService.getOpenIdAccessToken(userId);
   }
 }
