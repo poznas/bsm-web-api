@@ -39,3 +39,6 @@ logging:
     org.springframework: INFO
     com.bsm: DEBUG
   path: /logs
+
+aws:
+  region: eu-central-1

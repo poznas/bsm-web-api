@@ -13,4 +13,8 @@ public class Secrets {
 
   private String jwtSecret;
 
+  private String awsAccessKey;
+
+  private String awsSecretKey;
+
 }
