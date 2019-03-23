@@ -17,4 +17,7 @@ public class Secrets {
 
   private String awsSecretKey;
 
+  private String awsIdentityPoolId;
+
+  private String awsIdentityDeveloperProviderName;
 }

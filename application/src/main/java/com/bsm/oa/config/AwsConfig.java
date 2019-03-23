@@ -6,6 +6,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cognitoidentity.AmazonCognitoIdentity;
 import com.amazonaws.services.cognitoidentity.AmazonCognitoIdentityClient;
+import com.bsm.oa.user.impl.AwsIdentityServiceImpl;
+import com.bsm.oa.user.service.AwsIdentityService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +37,12 @@ public class AwsConfig {
       .withCredentials(credentialsProvider)
       .withRegion(Regions.fromName(region))
       .build();
+  }
+
+  @Bean
+  public AwsIdentityService awsIdentityService() {
+    return new AwsIdentityServiceImpl(secrets.getAwsIdentityPoolId(),
+      secrets.getAwsIdentityDeveloperProviderName(), amazonCognitoIdentity());
   }
 
 }
