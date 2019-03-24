@@ -1,3 +1,4 @@
+impl GET & PUT /user/{userId}/privileges
 return aws resource access data in headers, GET: /login
 impl jwt filter
 change code style -> tabs & indents: 2

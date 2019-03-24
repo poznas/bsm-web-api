@@ -43,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
       ofNullable(request.getHeader(HEADER_AUTHORIZATION))
         .map(header -> header.replace(TOKEN_PREFIX, ""))
         .map(tokenProvider::getAuthentication)
-        .ifPresent(securityContext::setAuthentication);
+        .ifPresent(auth -> SecurityContextHolder.getContext().setAuthentication(auth));
 
       filterChain.doFilter(request, response);
 
@@ -55,7 +55,7 @@ public class JwtFilter extends OncePerRequestFilter {
   }
 
   private void resetAuthenticationAfterRequest() {
-    securityContext.setAuthentication(null);
+    SecurityContextHolder.getContext().setAuthentication(null);
   }
 
   @Override

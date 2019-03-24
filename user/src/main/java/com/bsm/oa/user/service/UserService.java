@@ -1,8 +1,10 @@
 package com.bsm.oa.user.service;
 
+import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.user.model.AwsUserToken;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.security.core.Authentication;
@@ -24,4 +26,17 @@ public interface UserService {
    * @return null if user is not privileged enough
    */
   AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId);
+
+  /**
+   * @param userId user identifier
+   * @return set of privileges assigned to user
+   */
+  Set<Privilege> getPrivileges(@Valid @NotNull UserId userId);
+
+  /**
+   * Set user privileges
+   * @param userId user identifier
+   * @param privileges new set of privileges
+   */
+  void setUserPrivileges(@Valid @NotNull UserId userId, @NotNull Set<Privilege> privileges);
 }

@@ -12,6 +12,7 @@ import com.bsm.oa.user.model.AwsUserToken;
 import com.bsm.oa.user.service.AwsIdentityService;
 import com.bsm.oa.user.service.UserService;
 import java.util.Collection;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,16 @@ public class UserServiceImpl implements UserService {
   @Override
   public AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId) {
     return awsIdentityService.getOpenIdAccessToken(userId);
+  }
+
+  @Override
+  public Set<Privilege> getPrivileges(@Valid @NotNull UserId userId) {
+    return userRepository.getPrivileges(userId);
+  }
+
+  @Override
+  public void setUserPrivileges(@Valid @NotNull UserId userId, @NotNull Set<Privilege> privileges) {
+    userRepository.clearPrivileges(userId);
+    userRepository.addPrivileges(userId, privileges);
   }
 }
