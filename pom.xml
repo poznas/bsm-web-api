@@ -62,9 +62,17 @@
         <springfox.version>2.8.0</springfox.version>
         <springfox.spring.plugin.version>1.2.0.RELEASE</springfox.spring.plugin.version>
         <jaxb-api.version>2.3.0</jaxb-api.version>
+
+        <!-- logging -->
+        <zalando.logbook.version>1.5.0</zalando.logbook.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>logbook-spring-boot-starter</artifactId>
+            <version>${zalando.logbook.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>

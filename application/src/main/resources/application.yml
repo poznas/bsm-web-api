@@ -36,9 +36,13 @@ mybatis:
 # Logger configuration
 logging:
   level:
-    org.springframework: INFO
+    org.zalando.logbook: TRACE
+    org.springframework.web: DEBUG
     com.bsm: DEBUG
   path: /logs
+
+logbook:
+  format.style: http
 
 aws:
   region: eu-central-1
