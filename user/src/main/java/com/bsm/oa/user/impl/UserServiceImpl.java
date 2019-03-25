@@ -7,6 +7,7 @@ import static java.util.Collections.emptySet;
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
+import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.user.dao.UserRepository;
 import com.bsm.oa.user.model.AwsUserToken;
 import com.bsm.oa.user.service.AwsIdentityService;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final AwsIdentityService awsIdentityService;
+  private final UserDetailsProvider userProvider;
 
   @Override
   public Authentication getUserAuthentication(@NotNull User user) {
@@ -44,6 +46,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId) {
     return awsIdentityService.getOpenIdAccessToken(userId);
+  }
+
+  @Override
+  public AwsUserToken getOpenIdAccessToken() {
+    return getOpenIdAccessToken(userProvider.getUserId());
   }
 
   @Override

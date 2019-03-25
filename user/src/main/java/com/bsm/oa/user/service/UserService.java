@@ -28,6 +28,11 @@ public interface UserService {
   AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId);
 
   /**
+   * Same as {@link this#getOpenIdAccessToken(UserId)} but for context user
+   */
+  AwsUserToken getOpenIdAccessToken();
+
+  /**
    * @param userId user identifier
    * @return set of privileges assigned to user
    */
@@ -35,6 +40,7 @@ public interface UserService {
 
   /**
    * Set user privileges
+   *
    * @param userId user identifier
    * @param privileges new set of privileges
    */

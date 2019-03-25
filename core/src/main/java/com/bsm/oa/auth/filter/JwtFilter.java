@@ -8,6 +8,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import com.bsm.oa.auth.TokenProvider;
 import io.jsonwebtoken.JwtException;
 import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,7 +28,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-  private static final SecurityContext securityContext = SecurityContextHolder.getContext();
+  private static final Consumer<Authentication> setSecurityContextAuthentication = auth ->
+    SecurityContextHolder.getContext().setAuthentication(auth);
 
   private AntPathMatcher matcher = new AntPathMatcher();
 
@@ -43,23 +45,19 @@ public class JwtFilter extends OncePerRequestFilter {
       ofNullable(request.getHeader(HEADER_AUTHORIZATION))
         .map(header -> header.replace(TOKEN_PREFIX, ""))
         .map(tokenProvider::getAuthentication)
-        .ifPresent(auth -> SecurityContextHolder.getContext().setAuthentication(auth));
+        .ifPresent(setSecurityContextAuthentication);
 
       filterChain.doFilter(request, response);
 
-      resetAuthenticationAfterRequest();
+      setSecurityContextAuthentication.accept(null);
     } catch (JwtException e) {
       log.info("Security - JWT Exception : " + e.getMessage());
       response.setStatus(SC_UNAUTHORIZED);
     }
   }
 
-  private void resetAuthenticationAfterRequest() {
-    SecurityContextHolder.getContext().setAuthentication(null);
-  }
-
   @Override
-  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+  protected boolean shouldNotFilter(HttpServletRequest request) {
     return Stream.of(whiteList)
       .anyMatch(pattern -> matcher.match(pattern, request.getServletPath()));
   }
