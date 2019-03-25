@@ -4,7 +4,7 @@ import static com.bsm.oa.auth.Headers.HEADER_AUTHORIZATION;
 import static com.bsm.oa.auth.Headers.HEADER_AWS_IDENTITY;
 import static com.bsm.oa.auth.Headers.HEADER_AWS_TOKEN;
 import static com.bsm.oa.auth.Headers.HEADER_ID_TOKEN;
-import static com.bsm.oa.auth.Headers.TOKEN_PREFIX;
+import static com.bsm.oa.auth.Headers.HEADER_REFRESH_TOKEN;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
@@ -16,7 +16,6 @@ import com.bsm.oa.user.service.UserService;
 import java.io.IOException;
 import java.util.function.Supplier;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +42,7 @@ public class LoginFilter extends OncePerRequestFilter {
   protected void doFilterInternal(@NonNull HttpServletRequest request,
                                   @NonNull HttpServletResponse response,
                                   @NonNull FilterChain filterChain)
-    throws ServletException, IOException {
+    throws IOException {
 
     try {
       var idToken = ofNullable(request.getHeader(HEADER_ID_TOKEN))
@@ -52,8 +51,10 @@ public class LoginFilter extends OncePerRequestFilter {
       User user = tokenVerifier.verifyTokenId(idToken);
       Authentication authentication = userService.getUserAuthentication(user);
 
-      String bearerToken = tokenProvider.createToken(authentication);
-      response.addHeader(HEADER_AUTHORIZATION, TOKEN_PREFIX + " " + bearerToken);
+      String accessToken = tokenProvider.createAccessToken(authentication);
+      String refreshToken = tokenProvider.createRefreshToken(authentication);
+      response.addHeader(HEADER_AUTHORIZATION, accessToken);
+      response.addHeader(HEADER_REFRESH_TOKEN, refreshToken);
 
       var awsAccessToken = userService.getOpenIdAccessToken(user.getUserId());
       response.addHeader(HEADER_AWS_IDENTITY, awsAccessToken.getIdentityId());

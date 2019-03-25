@@ -23,17 +23,27 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class TokenProvider {
 
   private static final String AUTHORITIES_KEY = "auth";
-  private static final long VALIDITY_MILLISECONDS = 864_000_000;
+  private static final long REFRESH_TOKEN_EXPIRE = 864_000_000;
+  private static final long ACCESS_TOKEN_EXPIRE = 300_000;
 
   private final String jwtSecret;
 
-  public String createToken(Authentication authentication) {
+  public String createAccessToken(Authentication authentication) {
 
     String authorities = Joiner.on(',')
       .join(mapList(authentication.getAuthorities(), GrantedAuthority::getAuthority));
 
+    return buildToken(authentication, ACCESS_TOKEN_EXPIRE, authorities);
+  }
+
+  public String createRefreshToken(Authentication authentication) {
+    return buildToken(authentication, REFRESH_TOKEN_EXPIRE, "");
+  }
+
+  private String buildToken(Authentication authentication, long expiration, String authorities) {
+
     var now = ZonedDateTime.now();
-    var expirationDateTime = now.plus(VALIDITY_MILLISECONDS, MILLIS);
+    var expirationDateTime = now.plus(expiration, MILLIS);
 
     var issueDate = Date.from(now.toInstant());
     var expirationDate = Date.from(expirationDateTime.toInstant());
@@ -47,10 +57,10 @@ public class TokenProvider {
       .compact();
   }
 
-  public Authentication getAuthentication(String token) {
+  public Authentication getAuthentication(String accessKey) {
 
     var claims = Jwts.parser().setSigningKey(jwtSecret)
-      .parseClaimsJws(token).getBody();
+      .parseClaimsJws(accessKey).getBody();
 
     Collection<GrantedAuthority> authorities =
       stream(claims.get(AUTHORITIES_KEY).toString().split(","))

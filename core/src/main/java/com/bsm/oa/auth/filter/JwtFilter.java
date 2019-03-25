@@ -1,7 +1,6 @@
 package com.bsm.oa.auth.filter;
 
 import static com.bsm.oa.auth.Headers.HEADER_AUTHORIZATION;
-import static com.bsm.oa.auth.Headers.TOKEN_PREFIX;
 import static java.util.Optional.ofNullable;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
@@ -43,7 +42,6 @@ public class JwtFilter extends OncePerRequestFilter {
     throws ServletException, IOException {
     try {
       ofNullable(request.getHeader(HEADER_AUTHORIZATION))
-        .map(header -> header.replace(TOKEN_PREFIX, ""))
         .map(tokenProvider::getAuthentication)
         .ifPresent(setSecurityContextAuthentication);
 

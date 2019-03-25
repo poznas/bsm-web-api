@@ -1,3 +1,4 @@
+introduce a refresh token
 aws access token refresh api, GET: /user/aws-token
 impl GET & PUT /user/{userId}/privileges
 return aws resource access data in headers, GET: /login
