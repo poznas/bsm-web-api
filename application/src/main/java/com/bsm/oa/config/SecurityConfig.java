@@ -1,7 +1,7 @@
 package com.bsm.oa.config;
 
 import com.bsm.oa.auth.TokenProvider;
-import com.bsm.oa.auth.filter.JwtFilter;
+import com.bsm.oa.auth.filter.AccessTokenFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private static final String[] WHITE_LIST =
     {"/login",
+      "/refresh-token",
       "/v2/api-docs",
       "/configuration/ui",
       "/swagger-resources",
@@ -32,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    http.addFilterBefore(new JwtFilter(tokenProvider(), WHITE_LIST),
+    http.addFilterBefore(new AccessTokenFilter(tokenProvider(), WHITE_LIST),
       UsernamePasswordAuthenticationFilter.class);
     http.authorizeRequests()
       .antMatchers(WHITE_LIST).permitAll()

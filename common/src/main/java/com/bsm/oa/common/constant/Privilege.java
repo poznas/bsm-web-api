@@ -4,6 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 public enum Privilege implements GrantedAuthority {
 
+  //Allows user to access app resources stored in AWS (ex. photos & videos)
+  PRV_AWS_RESOURCE_ACCESS,
+
   //Allows user to report side mission
   PRV_REPORT_SM,
 

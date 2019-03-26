@@ -12,8 +12,10 @@ import io.jsonwebtoken.Jwts;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
+import javax.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -57,13 +59,14 @@ public class TokenProvider {
       .compact();
   }
 
-  public Authentication getAuthentication(String accessKey) {
+  public Authentication getAuthentication(@NotBlank String token) {
 
     var claims = Jwts.parser().setSigningKey(jwtSecret)
-      .parseClaimsJws(accessKey).getBody();
+      .parseClaimsJws(token).getBody();
 
     Collection<GrantedAuthority> authorities =
       stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+        .filter(StringUtils::isNotBlank)
         .map(SimpleGrantedAuthority::new)
         .collect(toList());
 

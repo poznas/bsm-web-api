@@ -4,7 +4,6 @@ import static com.bsm.oa.user.UserController.USER_CONTEXT;
 
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.UserId;
-import com.bsm.oa.user.model.AwsUserToken;
 import com.bsm.oa.user.service.UserService;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
@@ -26,15 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   static final String USER_CONTEXT = "/user";
-  private static final String USER_AWS_TOKEN_PATH = "/aws-token";
   private static final String USER_PRIVILEGES_PATH = "/{userId}/privileges";
 
   private final UserService userService;
-
-  @GetMapping(USER_AWS_TOKEN_PATH)
-  public AwsUserToken getAwsAccessToken() {
-    return userService.getOpenIdAccessToken();
-  }
 
   @GetMapping(USER_PRIVILEGES_PATH)
   public Set<Privilege> getUserPrivileges(@NotBlank @PathVariable("userId") UserId userId) {

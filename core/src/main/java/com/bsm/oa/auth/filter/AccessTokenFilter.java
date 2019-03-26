@@ -1,6 +1,9 @@
 package com.bsm.oa.auth.filter;
 
+import static com.bsm.oa.auth.AuthorizationException.EMPTY_ACCESS_TOKEN;
+import static com.bsm.oa.auth.AuthorizationException.INVALID_ACCESS_TOKEN;
 import static com.bsm.oa.auth.Headers.HEADER_AUTHORIZATION;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
@@ -25,7 +28,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 @Setter
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class AccessTokenFilter extends OncePerRequestFilter {
 
   private static final Consumer<Authentication> setSecurityContextAuthentication = auth ->
     SecurityContextHolder.getContext().setAuthentication(auth);
@@ -41,8 +44,10 @@ public class JwtFilter extends OncePerRequestFilter {
                                   @NonNull FilterChain filterChain)
     throws ServletException, IOException {
     try {
-      ofNullable(request.getHeader(HEADER_AUTHORIZATION))
-        .map(tokenProvider::getAuthentication)
+      String accessToken = ofNullable(request.getHeader(HEADER_AUTHORIZATION))
+        .orElseThrow(() -> EMPTY_ACCESS_TOKEN);
+
+      of(accessToken).map(tokenProvider::getAuthentication)
         .ifPresent(setSecurityContextAuthentication);
 
       filterChain.doFilter(request, response);
@@ -50,7 +55,7 @@ public class JwtFilter extends OncePerRequestFilter {
       setSecurityContextAuthentication.accept(null);
     } catch (JwtException e) {
       log.info("Security - JWT Exception : " + e.getMessage());
-      response.setStatus(SC_UNAUTHORIZED);
+      response.sendError(SC_UNAUTHORIZED, INVALID_ACCESS_TOKEN.getReason());
     }
   }
 

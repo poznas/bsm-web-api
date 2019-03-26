@@ -1,10 +1,10 @@
 package com.bsm.oa.auth.impl;
 
+import static com.bsm.oa.auth.AuthorizationException.INVALID_GOOGLE_ID_TOKEN;
 import static java.util.Arrays.asList;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang.StringUtils.substring;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import com.bsm.oa.auth.service.TokenVerifier;
 import com.bsm.oa.common.model.User;
@@ -20,9 +20,10 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.constraints.NotBlank;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
+@Slf4j
 @Component
 public class GoogleTokenVerifier implements TokenVerifier {
 
@@ -35,7 +36,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
       .map(this::verifyGoogleTokenId)
       .map(GoogleIdToken::getPayload)
       .map(this::buildUser)
-      .orElseThrow(() -> new ResponseStatusException(UNAUTHORIZED));
+      .orElseThrow();
   }
 
   private GoogleIdToken verifyGoogleTokenId(String tokenId) {
@@ -46,10 +47,14 @@ public class GoogleTokenVerifier implements TokenVerifier {
       .build();
 
     try {
-      return verifier.verify(tokenId);
+      GoogleIdToken token = verifier.verify(tokenId);
+      if(nonNull(token)) {
+        return token;
+      }
     } catch (GeneralSecurityException | IOException e) {
-      throw new ResponseStatusException(BAD_REQUEST, e.getMessage());
+      log.error(e.getMessage());
     }
+    throw INVALID_GOOGLE_ID_TOKEN;
   }
 
   private User buildUser(Payload payload) {

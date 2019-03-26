@@ -3,7 +3,6 @@ package com.bsm.oa.user.service;
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
-import com.bsm.oa.user.model.AwsUserToken;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -20,17 +19,12 @@ public interface UserService {
   Authentication getUserAuthentication(@NotNull User user);
 
   /**
-   * Get Open ID connect token from Amazon Cognito
+   * Retrieve user authentication object with privileges
    *
-   * @param userId user identifier
-   * @return null if user is not privileged enough
+   * @param authentication with user ID from refresh token
+   * @return authentication @see {@link Authentication}
    */
-  AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId);
-
-  /**
-   * Same as {@link this#getOpenIdAccessToken(UserId)} but for context user
-   */
-  AwsUserToken getOpenIdAccessToken();
+  Authentication refreshAuthentication(@NotNull Authentication authentication);
 
   /**
    * @param userId user identifier

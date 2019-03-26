@@ -1,3 +1,4 @@
+refactor tokens [app access, app refresh, aws access] lifecycle
 introduce a refresh token
 aws access token refresh api, GET: /user/aws-token
 impl GET & PUT /user/{userId}/privileges

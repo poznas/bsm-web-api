@@ -1,17 +1,17 @@
-package com.bsm.oa.user.impl;
+package com.bsm.oa.auth.impl;
 
-import static com.bsm.oa.common.util.ValueObjectUtil.getValue;
+import static com.bsm.oa.common.constant.Privilege.PRV_AWS_RESOURCE_ACCESS;
+import static com.bsm.oa.common.util.AuthUtil.hasPrivilege;
 
 import com.amazonaws.services.cognitoidentity.AmazonCognitoIdentity;
 import com.amazonaws.services.cognitoidentity.model.GetOpenIdTokenForDeveloperIdentityRequest;
-import com.bsm.oa.common.model.UserId;
+import com.bsm.oa.auth.service.AwsIdentityService;
 import com.bsm.oa.user.model.AwsUserToken;
-import com.bsm.oa.user.service.AwsIdentityService;
 import java.util.Map;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 
 @Slf4j
@@ -26,10 +26,14 @@ public class AwsIdentityServiceImpl implements AwsIdentityService {
   private final AmazonCognitoIdentity cognitoIdentity;
 
   @Override
-  public AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId) {
+  public AwsUserToken getOpenIdAccessToken(@NotNull Authentication auth) {
+
+    if(!hasPrivilege(auth, PRV_AWS_RESOURCE_ACCESS)) {
+      return null;
+    }
 
     var request = new GetOpenIdTokenForDeveloperIdentityRequest();
-    request.setLogins(Map.of(developerProviderName, getValue(userId)));
+    request.setLogins(Map.of(developerProviderName, auth.getName()));
     request.setIdentityPoolId(identityPoolId);
     request.setTokenDuration(tokenDuration);
 

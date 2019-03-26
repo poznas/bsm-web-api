@@ -1,16 +1,13 @@
 package com.bsm.oa.user.impl;
 
 import static com.bsm.oa.common.util.AuthUtil.buildAuthentication;
-import static com.bsm.oa.common.util.ValueObjectUtil.getValue;
+import static com.bsm.oa.common.util.AuthUtil.userId;
 import static java.util.Collections.emptySet;
 
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
-import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.user.dao.UserRepository;
-import com.bsm.oa.user.model.AwsUserToken;
-import com.bsm.oa.user.service.AwsIdentityService;
 import com.bsm.oa.user.service.UserService;
 import java.util.Collection;
 import java.util.Set;
@@ -27,8 +24,6 @@ import org.springframework.validation.annotation.Validated;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
-  private final AwsIdentityService awsIdentityService;
-  private final UserDetailsProvider userProvider;
 
   @Override
   public Authentication getUserAuthentication(@NotNull User user) {
@@ -40,17 +35,16 @@ public class UserServiceImpl implements UserService {
       privileges = userRepository.getPrivileges(user.getUserId());
     }
 
-    return buildAuthentication(getValue(user.getUserId()), privileges);
+    return buildAuthentication(user.getUserId(), privileges);
   }
 
   @Override
-  public AwsUserToken getOpenIdAccessToken(@Valid @NotNull UserId userId) {
-    return awsIdentityService.getOpenIdAccessToken(userId);
-  }
+  public Authentication refreshAuthentication(@NotNull Authentication authentication) {
+    UserId userId = userId(authentication);
 
-  @Override
-  public AwsUserToken getOpenIdAccessToken() {
-    return getOpenIdAccessToken(userProvider.getUserId());
+    var privileges = userRepository.getPrivileges(userId);
+
+    return buildAuthentication(userId, privileges);
   }
 
   @Override
