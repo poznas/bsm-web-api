@@ -27,6 +27,11 @@ public interface UserService {
   Authentication refreshAuthentication(@NotNull Authentication authentication);
 
   /**
+   * @return set of privileges assigned to current context user
+   */
+  Set<Privilege> getPrivileges();
+
+  /**
    * @param userId user identifier
    * @return set of privileges assigned to user
    */

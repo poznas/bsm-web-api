@@ -26,10 +26,17 @@ public class UserController {
 
   static final String USER_CONTEXT = "/user";
   private static final String USER_PRIVILEGES_PATH = "/{userId}/privileges";
+  private static final String USER_MY_PRIVILEGES_PATH = "/my-privileges";
 
   private final UserService userService;
 
+  @GetMapping(USER_MY_PRIVILEGES_PATH)
+  public Set<Privilege> getUserPrivileges() {
+    return userService.getPrivileges();
+  }
+
   @GetMapping(USER_PRIVILEGES_PATH)
+  @PreAuthorize("hasAuthority('PRV_EDIT_USERS')")
   public Set<Privilege> getUserPrivileges(@NotBlank @PathVariable("userId") UserId userId) {
     return userService.getPrivileges(userId);
   }

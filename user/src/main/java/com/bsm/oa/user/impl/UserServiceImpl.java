@@ -7,6 +7,7 @@ import static java.util.Collections.emptySet;
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
+import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.user.dao.UserRepository;
 import com.bsm.oa.user.service.UserService;
 import java.util.Collection;
@@ -24,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final UserDetailsProvider userDetailsProvider;
 
   @Override
   public Authentication getUserAuthentication(@NotNull User user) {
@@ -45,6 +47,11 @@ public class UserServiceImpl implements UserService {
     var privileges = userRepository.getPrivileges(userId);
 
     return buildAuthentication(userId, privileges);
+  }
+
+  @Override
+  public Set<Privilege> getPrivileges() {
+    return getPrivileges(userDetailsProvider.getUserId());
   }
 
   @Override
