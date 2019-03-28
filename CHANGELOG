@@ -1,3 +1,4 @@
+create side mission related tables
 impl GET /user/users/teammates
 impl GET /user/my-privileges
 refactor tokens [app access, app refresh, aws access] lifecycle
