@@ -1,3 +1,4 @@
+add mock API for PUT /side-mission/type/{typeId}
 create side mission related tables
 impl GET /user/users/teammates
 impl GET /user/my-privileges

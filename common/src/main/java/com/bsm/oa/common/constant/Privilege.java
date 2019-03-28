@@ -10,6 +10,12 @@ public enum Privilege implements GrantedAuthority {
   //Allows user to report side mission
   PRV_REPORT_SM,
 
+  //Allows user to judge side missions
+  PRV_JUDGE_SM,
+
+  //Allows user to assign rates to side mission params requiring professor
+  PRV_PROFESSOR_RATE_SM,
+
   //Allows user to add main competition points
   PRV_ADD_MC_POINTS,
 
@@ -19,11 +25,11 @@ public enum Privilege implements GrantedAuthority {
   //Allows user to add medal points
   PRV_ADD_MEDAL_POINTS,
 
-  //Allows user to judge side missions
-  PRV_JUDGE_SM,
-
   //Allows user to manage other users
   PRV_EDIT_USERS,
+
+  //Allows user to edit side missions
+  PRV_EDIT_SM,
 
   //Allow user to manage master switch, which enables reporting and adding points
   PRV_MASTER_LOCK,

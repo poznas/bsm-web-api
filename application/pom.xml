@@ -19,6 +19,11 @@
             <artifactId>user</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.bsm</groupId>
+            <artifactId>side-mission</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
