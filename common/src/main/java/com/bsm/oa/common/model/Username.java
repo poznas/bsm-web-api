@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Value;
 
-@Value(staticConstructor = "of")
+@Value
 public class Username implements ValueObject<String> {
 
     public static final int MAX_SIZE = 30;

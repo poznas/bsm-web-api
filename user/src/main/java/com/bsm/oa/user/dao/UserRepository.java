@@ -3,6 +3,7 @@ package com.bsm.oa.user.dao;
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
+import java.util.List;
 import java.util.Set;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,4 +22,5 @@ public interface UserRepository {
 
   void clearPrivileges(@Param("userId") UserId userId);
 
+  List<User> getTeammates(@Param("userId") UserId userId);
 }

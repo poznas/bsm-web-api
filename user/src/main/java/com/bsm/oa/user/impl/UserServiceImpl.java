@@ -11,6 +11,7 @@ import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.user.dao.UserRepository;
 import com.bsm.oa.user.service.UserService;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -63,5 +64,10 @@ public class UserServiceImpl implements UserService {
   public void setUserPrivileges(@Valid @NotNull UserId userId, @NotNull Set<Privilege> privileges) {
     userRepository.clearPrivileges(userId);
     userRepository.addPrivileges(userId, privileges);
+  }
+
+  @Override
+  public List<User> getTeammates() {
+    return userRepository.getTeammates(userDetailsProvider.getUserId());
   }
 }

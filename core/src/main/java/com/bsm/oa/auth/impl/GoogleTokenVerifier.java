@@ -70,7 +70,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
     return ofNullable(payload)
       .map(body -> (String) body.get("name"))
       .map(name -> substring(name, 0, Username.MAX_SIZE))
-      .map(Username::of)
+      .map(Username::new)
       .orElse(null);
   }
 }

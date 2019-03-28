@@ -3,8 +3,10 @@ package com.bsm.oa.user;
 import static com.bsm.oa.user.UserController.USER_CONTEXT;
 
 import com.bsm.oa.common.constant.Privilege;
+import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.user.service.UserService;
+import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,6 +29,7 @@ public class UserController {
   static final String USER_CONTEXT = "/user";
   private static final String USER_PRIVILEGES_PATH = "/{userId}/privileges";
   private static final String USER_MY_PRIVILEGES_PATH = "/my-privileges";
+  private static final String USER_TEAMMATES_PATH = "/users/teammates";
 
   private final UserService userService;
 
@@ -46,6 +49,11 @@ public class UserController {
   public void setUserPrivileges(@NotBlank @PathVariable("userId") UserId userId,
                                 @NotNull @RequestBody Set<Privilege> privileges) {
     userService.setUserPrivileges(userId, privileges);
+  }
+
+  @GetMapping(USER_TEAMMATES_PATH)
+  public List<User> getTeammates() {
+    return userService.getTeammates();
   }
 
 }

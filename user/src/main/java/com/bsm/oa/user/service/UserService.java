@@ -3,6 +3,7 @@ package com.bsm.oa.user.service;
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
+import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -44,4 +45,9 @@ public interface UserService {
    * @param privileges new set of privileges
    */
   void setUserPrivileges(@Valid @NotNull UserId userId, @NotNull Set<Privilege> privileges);
+
+  /**
+   * @return users assigned to the same team as the current user
+   */
+  List<User> getTeammates();
 }
