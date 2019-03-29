@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsm.oa.sm.dao.SideMissionRepository">
+
+  <update id="mergeSideMissionType" parameterType="com.bsm.oa.sm.model.SideMissionType">
+    insert into side_mission_type(sm_type_id, description_document_url, equation, dictionary_name)
+    values (#{typeId.value}, #{descriptionDocumentUrl.value}, #{equation.value},
+    #{dictionaryName.value})
+    on conflict (sm_type_id)
+    do update set
+    description_document_url = #{descriptionDocumentUrl.value},
+    equation = #{equation.value},
+    dictionary_name = #{dictionaryName.value};
+
+    delete from side_mission_proof_req where sm_type_id = #{typeId.value};
+    delete from side_mission_perform_param where sm_type_id = #{typeId.value};
+
+    <foreach collection="performParams" item="p">
+      insert into side_mission_perform_param
+      (sm_type_id, equation_symbol, perform_param_type,
+      to_judge_by, hint_dict_key, available_values_source)
+      values (#{typeId.value}, #{p.symbol.value}, #{p.type}, #{p.toJudgeBy}, #{p.hint.value},
+      #{p.availableValuesSource});
+    </foreach>
+
+    <foreach collection="proofRequirements" item="r">
+      insert into side_mission_proof_req(sm_type_id, proof_req_type, proof_example_url,
+      hint_dict_key) values
+      (#{typeId.value}, #{r.type}, #{r.exampleUrl.value}, #{r.hint.value});
+    </foreach>
+
+  </update>
+
+</mapper>

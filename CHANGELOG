@@ -1,4 +1,5 @@
-add mock API for PUT /side-mission/type/{typeId}
+impl sql merge side mission type statement
+add mock API for PUT /side-mission/type
 create side mission related tables
 impl GET /user/users/teammates
 impl GET /user/my-privileges
