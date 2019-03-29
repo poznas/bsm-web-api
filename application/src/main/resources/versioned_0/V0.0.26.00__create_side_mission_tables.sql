@@ -19,7 +19,6 @@ create table SIDE_MISSION_PERFORM_PARAM (
   perform_param_type varchar(24) not null,
   to_judge_by varchar(16) not null check (to_judge_by in ('PROFESSOR', 'JUDGE')),
   hint_dict_key varchar(128),
-  value_limit integer,
-  entries varchar(2400),
+  available_values_source varchar(2400),
   primary key (sm_type_id, equation_symbol)
 );

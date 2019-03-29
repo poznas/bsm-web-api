@@ -37,7 +37,7 @@ public class User {
   /**
    * image URL address
    */
-  private String imageUrl;
+  private HttpUrl imageUrl;
 
   @Valid
   @NotNull

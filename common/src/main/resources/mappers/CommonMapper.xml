@@ -18,5 +18,10 @@
       <arg column="team_id" javaType="String"/>
     </constructor>
   </resultMap>
+  <resultMap id="HttpUrlMap" type="com.bsm.oa.common.model.HttpUrl">
+    <constructor>
+      <arg column="image_url" javaType="String"/>
+    </constructor>
+  </resultMap>
 
 </mapper>

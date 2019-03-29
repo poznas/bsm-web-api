@@ -7,6 +7,7 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang.StringUtils.substring;
 
 import com.bsm.oa.auth.service.TokenVerifier;
+import com.bsm.oa.common.model.HttpUrl;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.common.model.Username;
@@ -61,7 +62,7 @@ public class GoogleTokenVerifier implements TokenVerifier {
     return User.builder()
       .username(buildUsername(payload))
       .userId(UserId.of(payload.getSubject()))
-      .imageUrl((String) payload.get("picture"))
+      .imageUrl(new HttpUrl((String) payload.get("picture")))
       .email(payload.getEmail())
       .build();
   }

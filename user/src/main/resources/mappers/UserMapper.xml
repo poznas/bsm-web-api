@@ -5,7 +5,7 @@
 
   <resultMap id="UserResultMap" type="com.bsm.oa.common.model.User">
     <result property="email" column="email"/>
-    <result property="imageUrl" column="image_url"/>
+    <association property="imageUrl" resultMap="common.HttpUrlMap" />
     <association property="userId" resultMap="common.UserIdMap"/>
     <association property="username" resultMap="common.UsernameMap"/>
     <association property="teamId" resultMap="common.TeamIdMap"/>
@@ -13,7 +13,7 @@
 
   <insert id="insertUser" parameterType="com.bsm.oa.common.model.User">
        insert into USERS (user_id, username, email, image_url)
-              values(#{userId.value}, #{username.value}, #{email}, #{imageUrl});
+              values(#{userId.value}, #{username.value}, #{email}, #{imageUrl.value});
      </insert>
 
   <select id="userExists" parameterType="string" resultType="boolean">

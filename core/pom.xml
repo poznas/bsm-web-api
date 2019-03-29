@@ -15,6 +15,11 @@
             <artifactId>google-api-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-cognitoidentity</artifactId>
+            <version>${aws.cognito.identity.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
         </dependency>

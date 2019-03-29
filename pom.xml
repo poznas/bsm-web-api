@@ -20,6 +20,7 @@
         <module>core</module>
         <module>common</module>
         <module>user</module>
+      <module>side-mission</module>
     </modules>
 
     <licenses>
