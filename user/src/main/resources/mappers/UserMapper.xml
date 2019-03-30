@@ -4,11 +4,11 @@
 <mapper namespace="com.bsm.oa.user.dao.UserRepository">
 
   <resultMap id="UserResultMap" type="com.bsm.oa.common.model.User">
+    <result property="userId" column="user_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="username" column="username" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="imageUrl" column="image_url" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="teamId" column="team_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
     <result property="email" column="email"/>
-    <association property="imageUrl" resultMap="common.HttpUrlMap" />
-    <association property="userId" resultMap="common.UserIdMap"/>
-    <association property="username" resultMap="common.UsernameMap"/>
-    <association property="teamId" resultMap="common.TeamIdMap"/>
   </resultMap>
 
   <insert id="insertUser" parameterType="com.bsm.oa.common.model.User">
