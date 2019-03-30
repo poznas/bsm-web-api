@@ -3,6 +3,42 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bsm.oa.sm.dao.SideMissionRepository">
 
+  <resultMap id="SideMissionTypeMap" type="com.bsm.oa.sm.model.SideMissionType">
+    <result property="typeId" column="sm_type_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="equation" column="equation" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="descriptionDocumentUrl" column="doc_url" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="dictionaryName" column="dictionary_name" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <collection property="performParams" ofType="com.bsm.oa.sm.model.PerformParam">
+      <result property="symbol" column="equation_symbol" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="hint" column="param_hint" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="type" column="perform_param_type"/>
+      <result property="toJudgeBy" column="to_judge_by"/>
+      <result property="availableValuesSource" column="available_values_source"/>
+    </collection>
+    <collection property="proofRequirements" ofType="com.bsm.oa.sm.model.ProofRequirement">
+      <result property="type" column="proof_req_type"/>
+      <result property="hint" column="proof_hint" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="exampleUrl" column="proof_example_url" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    </collection>
+  </resultMap>
+
+  <sql id="sideMissionTypeColumns">
+    t.sm_type_id,
+    t.description_document_url as doc_url,
+    t.equation,
+    t.dictionary_name,
+
+    p.equation_symbol,
+    p.perform_param_type,
+    p.to_judge_by,
+    p.hint_dict_key as param_hint,
+    p.available_values_source,
+
+    r.proof_req_type,
+    r.proof_example_url,
+    r.hint_dict_key as proof_hint
+  </sql>
+
   <update id="mergeSideMissionType" parameterType="com.bsm.oa.sm.model.SideMissionType">
     insert into side_mission_type(sm_type_id, description_document_url, equation, dictionary_name)
     values (#{typeId.value}, #{descriptionDocumentUrl.value}, #{equation.value},
@@ -31,5 +67,13 @@
     </foreach>
 
   </update>
+
+  <select id="getSideMissionTypes" resultMap="SideMissionTypeMap">
+    select
+    <include refid="sideMissionTypeColumns"/>
+    from side_mission_type t
+    natural join side_mission_perform_param p
+    natural join side_mission_proof_req r
+  </select>
 
 </mapper>

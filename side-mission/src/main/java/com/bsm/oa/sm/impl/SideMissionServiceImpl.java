@@ -3,6 +3,7 @@ package com.bsm.oa.sm.impl;
 import com.bsm.oa.sm.dao.SideMissionRepository;
 import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.service.SideMissionService;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,10 @@ public class SideMissionServiceImpl implements SideMissionService {
   @Transactional
   public void mergeSideMissionType(@Valid @NotNull SideMissionType missionType) {
     sideMissionRepository.mergeSideMissionType(missionType);
+  }
+
+  @Override
+  public List<SideMissionType> getSideMissionTypes() {
+    return sideMissionRepository.getSideMissionTypes();
   }
 }
