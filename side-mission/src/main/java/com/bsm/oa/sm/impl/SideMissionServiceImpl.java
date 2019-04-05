@@ -1,5 +1,6 @@
 package com.bsm.oa.sm.impl;
 
+import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.sm.dao.SideMissionRepository;
 import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 public class SideMissionServiceImpl implements SideMissionService {
 
   private final SideMissionRepository sideMissionRepository;
+  private final UserDetailsProvider userDetailsProvider;
 
   @Override
   @Transactional
@@ -31,7 +33,9 @@ public class SideMissionServiceImpl implements SideMissionService {
   }
 
   @Override
+  @Transactional
   public void reportSideMission(@Valid @NotNull ReportSideMissionRequest request) {
+    request.setPerformingUserId(userDetailsProvider.getUserId());
     sideMissionRepository.insertSideMissionReport(request);
   }
 }

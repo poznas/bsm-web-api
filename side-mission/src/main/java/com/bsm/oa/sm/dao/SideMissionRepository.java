@@ -12,7 +12,5 @@ public interface SideMissionRepository {
 
   List<SideMissionType> getSideMissionTypes();
 
-  default void insertSideMissionReport(ReportSideMissionRequest request){
-
-  }
+  void insertSideMissionReport(ReportSideMissionRequest request);
 }

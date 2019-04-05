@@ -76,4 +76,14 @@
     natural join side_mission_proof_req r
   </select>
 
+  <insert id="insertSideMissionReport" parameterType="com.bsm.oa.sm.request.ReportSideMissionRequest">
+    insert into side_mission_report(sm_type_id, performing_user_id, reporting_user_id) values
+    (#{missionTypeId.value}, #{performingUserId.value}, #{performingUserId.value});
+
+    <foreach collection="proofMediaLinks" item="link">
+      insert into side_mission_report_proof(report_id, proof_type, proof_url) values
+      (currval('side_mission_report_report_id_seq'), #{link.type}, #{link.awsS3Url.value});
+    </foreach>
+  </insert>
+
 </mapper>

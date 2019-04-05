@@ -1,8 +1,9 @@
 package com.bsm.oa.sm.request;
 
-import com.bsm.oa.common.model.AwsS3Url;
 import com.bsm.oa.common.model.SideMissionTypeID;
 import com.bsm.oa.common.model.UserId;
+import com.bsm.oa.sm.model.ProofMediaLink;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -34,6 +35,12 @@ public class ReportSideMissionRequest {
   /**
    * AWS S3 bucket proof photo / video locations
    */
-  private List<AwsS3Url> proofUrls;
+  private List<ProofMediaLink> proofMediaLinks;
+
+  /**
+   * reporting user ID, filled by server before inserting into DB
+   */
+  @JsonIgnore
+  private UserId reportingUserId;
 
 }
