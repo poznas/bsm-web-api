@@ -1,3 +1,4 @@
+add mock API for POST /side-mission/report
 impl GET /side-mission/type/types
 create generic value object mybatis type handler
 impl sql merge side mission type statement

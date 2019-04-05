@@ -2,6 +2,7 @@ package com.bsm.oa.sm.impl;
 
 import com.bsm.oa.sm.dao.SideMissionRepository;
 import com.bsm.oa.sm.model.SideMissionType;
+import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.SideMissionService;
 import java.util.List;
 import javax.validation.Valid;
@@ -27,5 +28,10 @@ public class SideMissionServiceImpl implements SideMissionService {
   @Override
   public List<SideMissionType> getSideMissionTypes() {
     return sideMissionRepository.getSideMissionTypes();
+  }
+
+  @Override
+  public void reportSideMission(@Valid @NotNull ReportSideMissionRequest request) {
+    sideMissionRepository.insertSideMissionReport(request);
   }
 }
