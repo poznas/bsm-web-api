@@ -12,7 +12,7 @@
       <result property="symbol" column="equation_symbol" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
       <result property="hint" column="param_hint" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
       <result property="type" column="perform_param_type"/>
-      <result property="toJudgeBy" column="to_judge_by"/>
+      <result property="toRateBy" column="to_rate_by"/>
       <result property="availableValuesSource" column="available_values_source"/>
     </collection>
     <collection property="proofRequirements" ofType="com.bsm.oa.sm.model.ProofRequirement">
@@ -30,7 +30,7 @@
 
     p.equation_symbol,
     p.perform_param_type,
-    p.to_judge_by,
+    p.to_rate_by,
     p.hint_dict_key as param_hint,
     p.available_values_source,
 
@@ -55,7 +55,7 @@
     <foreach collection="performParams" item="p">
       insert into side_mission_perform_param
       (sm_type_id, equation_symbol, perform_param_type,
-      to_judge_by, hint_dict_key, available_values_source)
+      to_rate_by, hint_dict_key, available_values_source)
       values (#{typeId.value}, #{p.symbol.value}, #{p.type}, #{p.toJudgeBy}, #{p.hint.value},
       #{p.availableValuesSource});
     </foreach>

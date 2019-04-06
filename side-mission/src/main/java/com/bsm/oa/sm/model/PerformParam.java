@@ -48,7 +48,7 @@ public class PerformParam {
    * Specifies whether a judge or professor should assign a value to this param
    */
   @NotNull
-  private ToJudgeBy toJudgeBy;
+  private ToRateBy toRateBy;
 
   /**
    * raw string kept in db, represents available values
