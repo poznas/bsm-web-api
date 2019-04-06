@@ -8,6 +8,6 @@ import lombok.Value;
 public class AwsS3Url implements ValueObject<String> {
 
   @NotBlank
-  @Pattern(regexp = "https://[a-z0-9][a-z0-9-.]*\\.s3\\.amazonaws\\.com/[w][wW]*")
+  @Pattern(regexp = "https://s3\\.[a-z0-9][a-z0-9-.]*\\.amazonaws\\.com/[a-z0-9][a-z0-9-./]*")
   private String value;
 }

@@ -68,17 +68,27 @@
 
   </update>
 
-  <select id="getSideMissionTypes" resultMap="SideMissionTypeMap">
+  <sql id="selectSideMissionTypes">
     select
     <include refid="sideMissionTypeColumns"/>
     from side_mission_type t
     natural join side_mission_perform_param p
     natural join side_mission_proof_req r
+  </sql>
+
+  <select id="getSideMissionTypes" resultMap="SideMissionTypeMap">
+    <include refid="selectSideMissionTypes"/>
   </select>
 
-  <insert id="insertSideMissionReport" parameterType="com.bsm.oa.sm.request.ReportSideMissionRequest">
+  <select id="getSideMissionType" resultMap="SideMissionTypeMap">
+    <include refid="selectSideMissionTypes"/>
+    where t.sm_type_id = #{value}
+  </select>
+
+  <insert id="insertSideMissionReport"
+    parameterType="com.bsm.oa.sm.request.ReportSideMissionRequest">
     insert into side_mission_report(sm_type_id, performing_user_id, reporting_user_id) values
-    (#{missionTypeId.value}, #{performingUserId.value}, #{performingUserId.value});
+    (#{missionTypeId.value}, #{performingUserId.value}, #{reportingUserId.value});
 
     <foreach collection="proofMediaLinks" item="link">
       insert into side_mission_report_proof(report_id, proof_type, proof_url) values

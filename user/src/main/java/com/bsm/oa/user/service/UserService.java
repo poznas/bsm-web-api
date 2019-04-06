@@ -6,6 +6,7 @@ import com.bsm.oa.common.model.UserId;
 import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.springframework.security.core.Authentication;
 
@@ -50,4 +51,12 @@ public interface UserService {
    * @return users assigned to the same team as the current user
    */
   List<User> getTeammates();
+
+  /**
+   * Throws BAD REQUEST exception if user does not exists
+   *
+   * @param userId user identifier
+   * @param who message prefix specifying request field
+   */
+  void assertUserExists(@Valid @NotNull UserId userId, @NotBlank String who);
 }

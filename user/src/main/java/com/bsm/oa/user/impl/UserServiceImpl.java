@@ -3,6 +3,7 @@ package com.bsm.oa.user.impl;
 import static com.bsm.oa.common.util.AuthUtil.buildAuthentication;
 import static com.bsm.oa.common.util.AuthUtil.userId;
 import static java.util.Collections.emptySet;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import com.bsm.oa.common.constant.Privilege;
 import com.bsm.oa.common.model.User;
@@ -14,11 +15,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Validated
@@ -69,5 +72,12 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<User> getTeammates() {
     return userRepository.getTeammates(userDetailsProvider.getUserId());
+  }
+
+  @Override
+  public void assertUserExists(@Valid @NotNull UserId userId, @NotBlank String who) {
+    if (!userRepository.userExists(userId)) {
+      throw new ResponseStatusException(BAD_REQUEST, who + " does not exists");
+    }
   }
 }

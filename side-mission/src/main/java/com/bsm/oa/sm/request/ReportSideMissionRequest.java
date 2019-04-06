@@ -35,6 +35,7 @@ public class ReportSideMissionRequest {
   /**
    * AWS S3 bucket proof photo / video locations
    */
+  @Valid
   private List<ProofMediaLink> proofMediaLinks;
 
   /**
