@@ -40,7 +40,7 @@ public class LoginServlet extends ReplyWithTokensServlet {
     throws IOException {
     try {
       var idToken = ofNullable(request.getHeader(HEADER_ID_TOKEN))
-        .orElseThrow(() -> EMPTY_PROVIDER_ID_TOKEN);
+        .orElseThrow(EMPTY_PROVIDER_ID_TOKEN);
 
       User user = tokenVerifier.verifyTokenId(idToken);
       Authentication authentication = userService.getUserAuthentication(user);

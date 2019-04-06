@@ -5,11 +5,12 @@ import static com.bsm.oa.auth.Headers.HEADER_ID_TOKEN;
 import static com.bsm.oa.auth.Headers.HEADER_REFRESH_TOKEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+import java.util.function.Supplier;
 import javax.validation.constraints.NotBlank;
 import org.springframework.web.server.ResponseStatusException;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
-public class AuthorizationException extends ResponseStatusException {
+public class AuthorizationException extends ResponseStatusException implements Supplier<RuntimeException> {
 
   public static final AuthorizationException EMPTY_PROVIDER_ID_TOKEN
     = new AuthorizationException(required(HEADER_ID_TOKEN));
@@ -35,5 +36,10 @@ public class AuthorizationException extends ResponseStatusException {
 
   private static String required(@NotBlank String header) {
     return "Required " + header + " is empty";
+  }
+
+  @Override
+  public RuntimeException get() {
+    return this;
   }
 }

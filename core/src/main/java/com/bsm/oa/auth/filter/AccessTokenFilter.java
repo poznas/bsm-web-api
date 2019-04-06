@@ -45,7 +45,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     throws ServletException, IOException {
     try {
       String accessToken = ofNullable(request.getHeader(HEADER_AUTHORIZATION))
-        .orElseThrow(() -> EMPTY_ACCESS_TOKEN);
+        .orElseThrow(EMPTY_ACCESS_TOKEN);
 
       of(accessToken).map(tokenProvider::getAuthentication)
         .ifPresent(setSecurityContextAuthentication);

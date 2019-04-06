@@ -38,7 +38,7 @@ public class RefreshTokenServlet extends ReplyWithTokensServlet {
       Authentication newAuth = ofNullable(request.getHeader(HEADER_REFRESH_TOKEN))
         .map(tokenProvider::getAuthentication)
         .map(userService::refreshAuthentication)
-        .orElseThrow(() -> EMPTY_REFRESH_TOKEN);
+        .orElseThrow(EMPTY_REFRESH_TOKEN);
 
       replyWithTokens(response, newAuth);
 
