@@ -2,6 +2,7 @@ package com.bsm.oa.sm.impl;
 
 import static com.bsm.oa.common.util.CollectionUtils.mapList;
 import static com.bsm.oa.common.util.CollectionUtils.streamOfNullable;
+import static com.bsm.oa.common.util.PageUtils.retrievePage;
 import static com.bsm.oa.sm.exception.SideMissionException.REQUIRED_PROOF_TYPES_NOT_MATCHED;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_TYPE_NOT_EXISTS;
 import static com.bsm.oa.sm.model.ProofRequirementType.PHOTO_OR_VIDEO;
@@ -10,7 +11,10 @@ import static java.util.Optional.of;
 import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.sm.dao.SideMissionRepository;
 import com.bsm.oa.sm.model.ProofMediaLink;
+import com.bsm.oa.sm.model.SideMissionReport;
+import com.bsm.oa.sm.model.SideMissionReportFilter;
 import com.bsm.oa.sm.model.SideMissionType;
+import com.bsm.oa.sm.model.ToRateBy;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.SideMissionService;
 import com.bsm.oa.user.service.UserService;
@@ -18,6 +22,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -55,6 +61,15 @@ public class SideMissionServiceImpl implements SideMissionService {
 
     request.setReportingUserId(userDetailsProvider.getUserId());
     sideMissionRepository.insertSideMissionReport(request);
+  }
+
+  @Override
+  public Page<SideMissionReport> getSideMissionReports(@NotNull ToRateBy toRateBy,
+                                                       @NotNull Pageable pageable) {
+    var filter = SideMissionReportFilter.of(toRateBy, userDetailsProvider.getUserId());
+
+    return retrievePage(filter, pageable, sideMissionRepository::selectReports,
+      sideMissionRepository::selectReportsCount);
   }
 
   private void validateProofMedia(@Valid @NotNull SideMissionType missionType,

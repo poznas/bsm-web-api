@@ -1,5 +1,6 @@
-package com.bsm.oa.common.model;
+package com.bsm.oa.sm.model;
 
+import com.bsm.oa.common.model.ValueObject;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Value;

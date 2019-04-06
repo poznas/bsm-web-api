@@ -85,6 +85,66 @@
     where t.sm_type_id = #{value}
   </select>
 
+  <resultMap id="SideMissionReportMap" type="com.bsm.oa.sm.model.SideMissionReport">
+    <result property="reportId" column="report_id" typeHandler="com.bsm.oa.common.mapper.LongVOHandler"/>
+    <result property="missionTypeId" column="sm_type_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="reportTimestamp" column="report_time"/>
+    <association property="performingUser">
+      <result property="userId" column="user_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="username" column="username" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="imageUrl" column="image_url" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="teamId" column="team_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    </association>
+    <association property="reportingUser">
+      <result property="userId" column="rep_user_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="username" column="rep_username" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="imageUrl" column="rep_image_url" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="teamId" column="rep_team_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    </association>
+  </resultMap>
+
+  <sql id="selectReportColumns">
+    r.report_id, r.sm_type_id, r.report_time,
+    p.user_id,
+    p.username,
+    p.image_url,
+    p.team_id,
+    rep.user_id as rep_user_id,
+    rep.username as rep_username,
+    rep.image_url as rep_image_url,
+    rep.team_id as rep_team_id
+  </sql>
+
+  <sql id="reportFilterCriteria">
+    where r.valid
+    and not r.rated
+    and exists (select * from side_mission_perform_param
+                            where sm_type_id = r.sm_type_id
+                            and to_rate_by = #{toRateBy})
+    and not exists (select * from sm_report_rate
+                              where report_id = r.report_id
+                              and rater_user_id = #{raterId.value})
+  </sql>
+
+  <select id="selectReports" resultMap="SideMissionReportMap"
+    parameterType="com.bsm.oa.sm.model.SideMissionReportFilter">
+    select
+    <include refid="selectReportColumns"/>
+    from side_mission_report r
+    left join users p on r.performing_user_id = p.user_id
+    left join users rep on r.reporting_user_id = rep.user_id
+    <include refid="reportFilterCriteria"/>
+    order by r.report_time
+    offset #{offset}
+    limit #{pageSize}
+  </select>
+
+  <select id="selectReportsCount" resultType="long"
+    parameterType="com.bsm.oa.sm.model.SideMissionReportFilter">
+    select count(*) from side_mission_report r
+    <include refid="reportFilterCriteria"/>
+  </select>
+
   <insert id="insertSideMissionReport"
     parameterType="com.bsm.oa.sm.request.ReportSideMissionRequest">
     insert into side_mission_report(sm_type_id, performing_user_id, reporting_user_id) values

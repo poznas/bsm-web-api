@@ -2,7 +2,6 @@ package com.bsm.oa.sm.model;
 
 import com.bsm.oa.common.model.DictionaryName;
 import com.bsm.oa.common.model.HttpUrl;
-import com.bsm.oa.common.model.SideMissionTypeID;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;

@@ -1,8 +1,8 @@
 package com.bsm.oa.sm.request;
 
-import com.bsm.oa.common.model.SideMissionTypeID;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.sm.model.ProofMediaLink;
+import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.validation.Valid;
