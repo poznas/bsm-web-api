@@ -7,11 +7,14 @@ import static com.bsm.oa.sm.exception.SideMissionException.REQUIRED_PROOF_TYPES_
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_REPORT_NOT_EXISTS;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_REPORT_RATED;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_TYPE_NOT_EXISTS;
+import static com.bsm.oa.sm.model.PerformParamType.BOOLEAN;
 import static com.bsm.oa.sm.model.ProofRequirementType.PHOTO_OR_VIDEO;
 import static java.util.Optional.of;
 
+import com.bsm.oa.common.cdi.BeanFactory;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.common.service.UserDetailsProvider;
+import com.bsm.oa.sm.annotation.PerformParamValidator.Literal;
 import com.bsm.oa.sm.dao.SideMissionRepository;
 import com.bsm.oa.sm.model.PerformParamSymbol;
 import com.bsm.oa.sm.model.ProofMediaLink;
@@ -22,6 +25,7 @@ import com.bsm.oa.sm.model.SideMissionReportId;
 import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
+import com.bsm.oa.sm.service.IPerformParamValidator;
 import com.bsm.oa.sm.service.SideMissionService;
 import com.bsm.oa.user.service.UserService;
 import java.util.List;
@@ -30,12 +34,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+@Slf4j
 @Service
 @Validated
 @RequiredArgsConstructor
@@ -44,6 +50,7 @@ public class SideMissionServiceImpl implements SideMissionService {
   private final SideMissionRepository sideMissionRepository;
   private final UserDetailsProvider userDetailsProvider;
   private final UserService userService;
+  private final BeanFactory beanFactory;
 
   @Override
   @Transactional
@@ -89,7 +96,7 @@ public class SideMissionServiceImpl implements SideMissionService {
   @Override
   public void rateReport(@Valid @NotNull SideMissionReportId reportId, @NotNull RaterType raterType,
                          @Valid @NotEmpty Map<PerformParamSymbol, Double> rates) {
-    of(reportId).map(sideMissionRepository::selectReport)
+    var report = of(reportId).map(sideMissionRepository::selectReport)
       .orElseThrow(SIDE_MISSION_REPORT_NOT_EXISTS);
 
     UserId userId = userDetailsProvider.getUserId();
@@ -97,8 +104,15 @@ public class SideMissionServiceImpl implements SideMissionService {
     if (sideMissionRepository.hasRatedReport(userId, reportId)) {
       SIDE_MISSION_REPORT_RATED.raise();
     }
+    validatePerformParams(report.getMissionTypeId(), rates);
 
     sideMissionRepository.insertReportRate(userId, reportId, rates);
+  }
+
+  private void validatePerformParams(@Valid @NotNull SideMissionTypeID missionTypeId,
+                                     @Valid @NotEmpty Map<PerformParamSymbol, Double> rates) {
+    var validator = beanFactory.getBean(IPerformParamValidator.class, new Literal(BOOLEAN));
+    log.info(validator.getClass().getName());
   }
 
   private void validateProofMedia(@Valid @NotNull SideMissionType missionType,

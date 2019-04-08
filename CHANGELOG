@@ -1,3 +1,4 @@
+impl find bean by annotation with value
 impl POST /side-mission/report/{id}/rate/{raterType}
 impl GET /side-mission/type/{typeId}
 impl GET /side-mission/report/reports/{raterType}
