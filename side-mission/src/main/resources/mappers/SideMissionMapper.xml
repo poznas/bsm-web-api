@@ -139,6 +139,15 @@
     limit #{pageSize}
   </select>
 
+  <select id="selectReport" resultMap="SideMissionReportMap">
+    select
+    <include refid="selectReportColumns"/>
+    from side_mission_report r
+    left join users p on r.performing_user_id = p.user_id
+    left join users rep on r.reporting_user_id = rep.user_id
+    where r.report_id = #{value}
+  </select>
+
   <select id="selectReportsCount" resultType="long"
     parameterType="com.bsm.oa.sm.model.SideMissionReportFilter">
     select count(*) from side_mission_report r
@@ -153,6 +162,22 @@
     <foreach collection="proofMediaLinks" item="link">
       insert into side_mission_report_proof(report_id, proof_type, proof_url) values
       (currval('side_mission_report_report_id_seq'), #{link.type}, #{link.awsS3Url.value});
+    </foreach>
+  </insert>
+
+  <select id="hasRatedReport" resultType="boolean">
+    select exists (
+    select * from sm_report_rate
+      where report_id = #{reportId.value}
+      and rater_user_id = #{userId.value}
+    )
+  </select>
+
+  <insert id="insertReportRate">
+    <foreach collection="rates" index="symbol" item="value">
+      insert into sm_report_rate(sm_type_id, report_id, perform_param_symbol, rate_value, rater_user_id) select
+      sm_type_id, #{reportId.value}, #{symbol.value}, #{value}, #{userId.value} from side_mission_report
+      where report_id = #{reportId.value};
     </foreach>
   </insert>
 

@@ -20,7 +20,7 @@ public class PerformParam {
    */
   @Valid
   @NotNull
-  private EquationSymbol symbol;
+  private PerformParamSymbol symbol;
 
   /**
    * perform param type, TODO: dict name comment
@@ -48,7 +48,7 @@ public class PerformParam {
    * Specifies whether a judge or professor should assign a value to this param
    */
   @NotNull
-  private ToRateBy toRateBy;
+  private RaterType toRateBy;
 
   /**
    * raw string kept in db, represents available values

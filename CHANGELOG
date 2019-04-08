@@ -1,5 +1,6 @@
+impl POST /side-mission/report/{id}/rate/{raterType}
 impl GET /side-mission/type/{typeId}
-impl GET /side-mission/report/reports/for-(judge|professor)
+impl GET /side-mission/report/reports/{raterType}
 impl RQ business validation, POST /side-mission/report
 create sm report tables, impl sql insert, POST /side-mission/report
 add mock API for POST /side-mission/report

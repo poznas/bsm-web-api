@@ -11,6 +11,8 @@ public enum SideMissionException implements Supplier<RuntimeException> {
 
   SIDE_MISSION_TYPE_NOT_EXISTS("Side mission type does not exists."),
   REQUIRED_PROOF_TYPES_NOT_MATCHED("Provided proof resource types do not meet requirements. "),
+  SIDE_MISSION_REPORT_NOT_EXISTS("Side mission report does not exists."),
+  SIDE_MISSION_REPORT_RATED("User has already rated that side mission report."),
   ;
 
   private final String message;

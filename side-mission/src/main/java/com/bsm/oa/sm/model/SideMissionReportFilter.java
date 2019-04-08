@@ -11,7 +11,7 @@ import lombok.Setter;
 @RequiredArgsConstructor(staticName = "of")
 public class SideMissionReportFilter extends PageableFilter {
 
-  private final ToRateBy toRateBy;
+  private final RaterType toRateBy;
 
   private final UserId raterId;
 

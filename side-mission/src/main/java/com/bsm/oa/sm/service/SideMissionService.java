@@ -1,12 +1,16 @@
 package com.bsm.oa.sm.service;
 
+import com.bsm.oa.sm.model.PerformParamSymbol;
+import com.bsm.oa.sm.model.RaterType;
 import com.bsm.oa.sm.model.SideMissionReport;
+import com.bsm.oa.sm.model.SideMissionReportId;
 import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.model.SideMissionTypeID;
-import com.bsm.oa.sm.model.ToRateBy;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +47,15 @@ public interface SideMissionService {
    * @param pageable page request params
    * @return paged list of SM reports awaiting current user's rate
    */
-  Page<SideMissionReport> getSideMissionReports(@NotNull ToRateBy toRateBy,
+  Page<SideMissionReport> getSideMissionReports(@NotNull RaterType toRateBy,
                                                 @NotNull Pageable pageable);
+
+  /**
+   * Assign perform param rates to side mission report
+   * @param reportId side mission report identifier
+   * @param raterType rater type
+   * @param rates map of mission perform param symbol <-> assigned value
+   */
+  void rateReport(@Valid @NotNull SideMissionReportId reportId, @NotNull RaterType raterType,
+                  @Valid @NotEmpty Map<PerformParamSymbol, Double> rates);
 }

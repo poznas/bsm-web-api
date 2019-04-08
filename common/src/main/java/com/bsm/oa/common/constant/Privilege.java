@@ -11,7 +11,7 @@ public enum Privilege implements GrantedAuthority {
   PRV_REPORT_SM,
 
   //Allows user to judge side missions
-  PRV_JUDGE_SM,
+  PRV_JUDGE_RATE_SM,
 
   //Allows user to assign rates to side mission params requiring professor
   PRV_PROFESSOR_RATE_SM,

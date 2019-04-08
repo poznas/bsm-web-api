@@ -4,23 +4,30 @@ import static com.bsm.oa.common.util.CollectionUtils.mapList;
 import static com.bsm.oa.common.util.CollectionUtils.streamOfNullable;
 import static com.bsm.oa.common.util.PageUtils.retrievePage;
 import static com.bsm.oa.sm.exception.SideMissionException.REQUIRED_PROOF_TYPES_NOT_MATCHED;
+import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_REPORT_NOT_EXISTS;
+import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_REPORT_RATED;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_TYPE_NOT_EXISTS;
 import static com.bsm.oa.sm.model.ProofRequirementType.PHOTO_OR_VIDEO;
 import static java.util.Optional.of;
 
+import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.sm.dao.SideMissionRepository;
+import com.bsm.oa.sm.model.PerformParamSymbol;
 import com.bsm.oa.sm.model.ProofMediaLink;
+import com.bsm.oa.sm.model.RaterType;
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionReportFilter;
+import com.bsm.oa.sm.model.SideMissionReportId;
 import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.model.SideMissionTypeID;
-import com.bsm.oa.sm.model.ToRateBy;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.SideMissionService;
 import com.bsm.oa.user.service.UserService;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -71,12 +78,27 @@ public class SideMissionServiceImpl implements SideMissionService {
   }
 
   @Override
-  public Page<SideMissionReport> getSideMissionReports(@NotNull ToRateBy toRateBy,
+  public Page<SideMissionReport> getSideMissionReports(@NotNull RaterType toRateBy,
                                                        @NotNull Pageable pageable) {
     var filter = SideMissionReportFilter.of(toRateBy, userDetailsProvider.getUserId());
 
     return retrievePage(filter, pageable, sideMissionRepository::selectReports,
       sideMissionRepository::selectReportsCount);
+  }
+
+  @Override
+  public void rateReport(@Valid @NotNull SideMissionReportId reportId, @NotNull RaterType raterType,
+                         @Valid @NotEmpty Map<PerformParamSymbol, Double> rates) {
+    of(reportId).map(sideMissionRepository::selectReport)
+      .orElseThrow(SIDE_MISSION_REPORT_NOT_EXISTS);
+
+    UserId userId = userDetailsProvider.getUserId();
+
+    if (sideMissionRepository.hasRatedReport(userId, reportId)) {
+      SIDE_MISSION_REPORT_RATED.raise();
+    }
+
+    sideMissionRepository.insertReportRate(userId, reportId, rates);
   }
 
   private void validateProofMedia(@Valid @NotNull SideMissionType missionType,

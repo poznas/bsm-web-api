@@ -2,16 +2,19 @@ package com.bsm.oa.sm;
 
 
 import static com.bsm.oa.sm.SideMissionController.SM_CONTEXT;
-import static com.bsm.oa.sm.model.ToRateBy.JUDGE;
-import static com.bsm.oa.sm.model.ToRateBy.PROFESSOR;
 
+import com.bsm.oa.sm.model.PerformParamSymbol;
+import com.bsm.oa.sm.model.RaterType;
 import com.bsm.oa.sm.model.SideMissionReport;
+import com.bsm.oa.sm.model.SideMissionReportId;
 import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.SideMissionService;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,9 +42,9 @@ public class SideMissionController {
   private static final String SM_MISSION_TYPE_ID = SM_MISSION_TYPE + "/{typeId}";
   private static final String SM_MISSION_TYPES = SM_MISSION_TYPE + "/types";
   private static final String SM_REPORT = "/report";
-  private static final String SM_REPORTS = SM_REPORT + "/reports";
-  private static final String SM_REPORTS_FOR_JUDGE = SM_REPORTS + "/for-judge";
-  private static final String SM_REPORTS_FOR_PROFESSOR = SM_REPORTS + "/for-professor";
+  private static final String SM_REPORT_ID = SM_REPORT + "/{reportId}";
+  private static final String SM_REPORT_RATE = SM_REPORT_ID + "/rate/{raterType}";
+  private static final String SM_REPORTS = SM_REPORT + "/reports/{raterType}";
 
   private final SideMissionService sideMissionService;
 
@@ -68,15 +71,19 @@ public class SideMissionController {
     sideMissionService.reportSideMission(request);
   }
 
-  @GetMapping(SM_REPORTS_FOR_JUDGE)
-  @PreAuthorize("hasAuthority('PRV_JUDGE_SM')")
-  public Page<SideMissionReport> getReportsForJudge(@PageableDefault Pageable pageable) {
-    return sideMissionService.getSideMissionReports(JUDGE, pageable);
+  @GetMapping(SM_REPORTS)
+  @PreAuthorize("hasAuthority('PRV_' + #raterType + '_RATE_SM')")
+  public Page<SideMissionReport> getReportsForJudge(@PageableDefault Pageable pageable,
+                                                    @NotNull @PathVariable("raterType") RaterType raterType
+  ) {
+    return sideMissionService.getSideMissionReports(raterType, pageable);
   }
 
-  @GetMapping(SM_REPORTS_FOR_PROFESSOR)
-  @PreAuthorize("hasAuthority('PRV_PROFESSOR_RATE_SM')")
-  public Page<SideMissionReport> getReportsForProfessor(@PageableDefault Pageable pageable) {
-    return sideMissionService.getSideMissionReports(PROFESSOR, pageable);
+  @PostMapping(SM_REPORT_RATE)
+  @PreAuthorize("hasAuthority('PRV_' + #raterType + '_RATE_SM')")
+  public void postReportRate(@NotNull @PathVariable("reportId") Long reportId,
+                             @NotNull @PathVariable("raterType") RaterType raterType,
+                             @Valid @NotEmpty @RequestBody Map<PerformParamSymbol, Double> rates) {
+    sideMissionService.rateReport(SideMissionReportId.of(reportId), raterType, rates);
   }
 }

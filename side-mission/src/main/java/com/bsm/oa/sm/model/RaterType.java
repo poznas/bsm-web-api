@@ -1,6 +1,6 @@
 package com.bsm.oa.sm.model;
 
-public enum ToRateBy {
+public enum RaterType {
   JUDGE,
   PROFESSOR
 }

@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import lombok.Value;
 
 @Value
-public class EquationSymbol implements ValueObject<String> {
+public class PerformParamSymbol implements ValueObject<String> {
 
   @NotBlank
   @Size(max = 8)
