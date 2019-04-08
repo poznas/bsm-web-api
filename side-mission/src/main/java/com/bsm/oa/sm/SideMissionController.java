@@ -7,6 +7,7 @@ import static com.bsm.oa.sm.model.ToRateBy.PROFESSOR;
 
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionType;
+import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.SideMissionService;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +36,7 @@ public class SideMissionController {
 
   static final String SM_CONTEXT = "/side-mission";
   private static final String SM_MISSION_TYPE = "/type";
+  private static final String SM_MISSION_TYPE_ID = SM_MISSION_TYPE + "/{typeId}";
   private static final String SM_MISSION_TYPES = SM_MISSION_TYPE + "/types";
   private static final String SM_REPORT = "/report";
   private static final String SM_REPORTS = SM_REPORT + "/reports";
@@ -51,6 +54,12 @@ public class SideMissionController {
   @GetMapping(SM_MISSION_TYPES)
   public List<SideMissionType> getSideMissionTypes() {
     return sideMissionService.getSideMissionTypes();
+  }
+
+  @GetMapping(SM_MISSION_TYPE_ID)
+  public SideMissionType getSideMissionTypes(
+    @Valid @NotNull @PathVariable("typeId") SideMissionTypeID typeId) {
+    return sideMissionService.getSideMissionType(typeId);
   }
 
   @PostMapping(SM_REPORT)

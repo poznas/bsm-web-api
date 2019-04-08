@@ -2,6 +2,7 @@ package com.bsm.oa.sm.service;
 
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionType;
+import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.bsm.oa.sm.model.ToRateBy;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import java.util.List;
@@ -23,6 +24,12 @@ public interface SideMissionService {
    * @return side mission type list
    */
   List<SideMissionType> getSideMissionTypes();
+
+  /**
+   * @param typeId side mission type identifier
+   * @return side mission type details
+   */
+  SideMissionType getSideMissionType(@Valid @NotNull SideMissionTypeID typeId);
 
   /**
    * Create side mission report

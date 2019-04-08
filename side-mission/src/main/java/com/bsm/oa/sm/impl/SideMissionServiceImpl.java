@@ -14,6 +14,7 @@ import com.bsm.oa.sm.model.ProofMediaLink;
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionReportFilter;
 import com.bsm.oa.sm.model.SideMissionType;
+import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.bsm.oa.sm.model.ToRateBy;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.SideMissionService;
@@ -46,6 +47,12 @@ public class SideMissionServiceImpl implements SideMissionService {
   @Override
   public List<SideMissionType> getSideMissionTypes() {
     return sideMissionRepository.getSideMissionTypes();
+  }
+
+  @Override
+  public SideMissionType getSideMissionType(@Valid @NotNull SideMissionTypeID typeId) {
+    return of(typeId).map(sideMissionRepository::getSideMissionType)
+      .orElseThrow(SIDE_MISSION_TYPE_NOT_EXISTS);
   }
 
   @Override
