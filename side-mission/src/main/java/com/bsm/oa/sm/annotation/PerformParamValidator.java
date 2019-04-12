@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.enterprise.util.AnnotationLiteral;
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 @Target(ElementType.TYPE)
@@ -16,8 +15,8 @@ public @interface PerformParamValidator {
   PerformParamType value();
 
 
+  @SuppressWarnings("squid:S2160")
   @RequiredArgsConstructor
-  @EqualsAndHashCode(callSuper = true)
   final class Literal extends AnnotationLiteral<PerformParamValidator> implements
     PerformParamValidator {
 

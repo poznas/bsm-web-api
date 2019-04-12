@@ -13,6 +13,8 @@ public enum SideMissionException implements Supplier<RuntimeException> {
   REQUIRED_PROOF_TYPES_NOT_MATCHED("Provided proof resource types do not meet requirements. "),
   SIDE_MISSION_REPORT_NOT_EXISTS("Side mission report does not exists."),
   SIDE_MISSION_REPORT_RATED("User has already rated that side mission report."),
+  SIDE_MISSION_PARAM_MISSING("Required side mission perform param not provided: "),
+  SIDE_MISSION_PARAM_UNKNOWN("Unknown perform params: "),
   ;
 
   private final String message;
@@ -22,8 +24,12 @@ public enum SideMissionException implements Supplier<RuntimeException> {
     return new ResponseStatusException(BAD_REQUEST, message);
   }
 
-  public void raise(String details) {
-    throw new ResponseStatusException(BAD_REQUEST, message + details);
+  public RuntimeException get(Object details) {
+    return new ResponseStatusException(BAD_REQUEST, message + details);
+  }
+
+  public void raise(Object details) {
+    throw get(details);
   }
 
   public void raise() {

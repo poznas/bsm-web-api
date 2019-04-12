@@ -13,7 +13,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 @Component
 @Scope(value = SCOPE_SINGLETON)
 public class BeanFactory implements ApplicationContextAware {
@@ -26,7 +28,10 @@ public class BeanFactory implements ApplicationContextAware {
   }
 
   public <B> B getBean(@NonNull Class<B> beanClass, @NonNull Annotation annotation) {
-    return findBeansWithAnnotation(beanClass, annotation.getClass()).get(annotation);
+    var beans = findBeansWithAnnotation(beanClass, annotation.annotationType());
+
+    return of(annotation).map(beans::get)
+      .orElseThrow(() -> new RuntimeException("Could not find bean with : " + annotation));
   }
 
   //.filter(beanClass::isInstance)

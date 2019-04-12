@@ -4,18 +4,21 @@ import static com.bsm.oa.common.util.CollectionUtils.mapList;
 import static com.bsm.oa.common.util.CollectionUtils.streamOfNullable;
 import static com.bsm.oa.common.util.PageUtils.retrievePage;
 import static com.bsm.oa.sm.exception.SideMissionException.REQUIRED_PROOF_TYPES_NOT_MATCHED;
+import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_PARAM_MISSING;
+import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_PARAM_UNKNOWN;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_REPORT_NOT_EXISTS;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_REPORT_RATED;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_TYPE_NOT_EXISTS;
-import static com.bsm.oa.sm.model.PerformParamType.BOOLEAN;
 import static com.bsm.oa.sm.model.ProofRequirementType.PHOTO_OR_VIDEO;
 import static java.util.Optional.of;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 import com.bsm.oa.common.cdi.BeanFactory;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.common.service.UserDetailsProvider;
 import com.bsm.oa.sm.annotation.PerformParamValidator.Literal;
 import com.bsm.oa.sm.dao.SideMissionRepository;
+import com.bsm.oa.sm.model.PerformParam;
 import com.bsm.oa.sm.model.PerformParamSymbol;
 import com.bsm.oa.sm.model.ProofMediaLink;
 import com.bsm.oa.sm.model.RaterType;
@@ -28,6 +31,7 @@ import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.IPerformParamValidator;
 import com.bsm.oa.sm.service.SideMissionService;
 import com.bsm.oa.user.service.UserService;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
@@ -104,15 +108,30 @@ public class SideMissionServiceImpl implements SideMissionService {
     if (sideMissionRepository.hasRatedReport(userId, reportId)) {
       SIDE_MISSION_REPORT_RATED.raise();
     }
-    validatePerformParams(report.getMissionTypeId(), rates);
+    validatePerformParams(report.getMissionTypeId(), new HashMap<>(rates));
 
     sideMissionRepository.insertReportRate(userId, reportId, rates);
   }
 
   private void validatePerformParams(@Valid @NotNull SideMissionTypeID missionTypeId,
                                      @Valid @NotEmpty Map<PerformParamSymbol, Double> rates) {
-    var validator = beanFactory.getBean(IPerformParamValidator.class, new Literal(BOOLEAN));
-    log.info(validator.getClass().getName());
+    var missionType = sideMissionRepository.getSideMissionType(missionTypeId);
+
+    missionType.getPerformParams().forEach(param ->
+      of(param.getSymbol()).map(rates::remove)
+        .ifPresentOrElse(rateValue -> validateRateValue(param, rateValue),
+          () -> SIDE_MISSION_PARAM_MISSING.raise(param.getSymbol()))
+    );
+
+    if (isNotEmpty(rates.values())) {
+      SIDE_MISSION_PARAM_UNKNOWN.raise(rates.keySet());
+    }
+}
+
+  private void validateRateValue(@Valid @NotNull PerformParam param, @NotNull Double value) {
+    var validator = beanFactory.getBean(IPerformParamValidator.class, new Literal(param.getType()));
+
+    validator.validateRateValue(param, value);
   }
 
   private void validateProofMedia(@Valid @NotNull SideMissionType missionType,

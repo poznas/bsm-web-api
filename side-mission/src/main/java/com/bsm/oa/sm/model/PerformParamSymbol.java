@@ -11,4 +11,9 @@ public class PerformParamSymbol implements ValueObject<String> {
   @NotBlank
   @Size(max = 8)
   private String value;
+
+  @Override
+  public String toString() {
+    return value;
+  }
 }

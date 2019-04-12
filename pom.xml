@@ -50,6 +50,7 @@
 
         <guava.version>20.0</guava.version>
         <apache.commons.lang.version>2.6</apache.commons.lang.version>
+        <apache.commons.collection.version>4.0</apache.commons.collection.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
 
         <javax.cdi.api.version>2.0</javax.cdi.api.version>
@@ -140,6 +141,11 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>${apache.commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${apache.commons.collection.version}</version>
         </dependency>
 
         <dependency>
