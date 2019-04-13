@@ -72,8 +72,8 @@
     select
     <include refid="sideMissionTypeColumns"/>
     from side_mission_type t
-    natural join side_mission_perform_param p
-    natural join side_mission_proof_req r
+    join side_mission_perform_param p using (sm_type_id)
+    join side_mission_proof_req r using (sm_type_id)
   </sql>
 
   <select id="getSideMissionTypes" resultMap="SideMissionTypeMap">
