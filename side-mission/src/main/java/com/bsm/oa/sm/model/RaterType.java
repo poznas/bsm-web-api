@@ -2,5 +2,9 @@ package com.bsm.oa.sm.model;
 
 public enum RaterType {
   JUDGE,
-  PROFESSOR
+  PROFESSOR;
+
+  public RaterType getOther() {
+    return this == JUDGE ? PROFESSOR : JUDGE;
+  }
 }

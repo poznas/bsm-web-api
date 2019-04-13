@@ -1,3 +1,4 @@
+validate rater type, POST /side-mission/report/{id}/rate/{raterType}
 validate perform params rate values, POST /side-mission/report/{id}/rate/{raterType}
 validate perform params presence, POST /side-mission/report/{id}/rate/{raterType}
 impl find bean by annotation with value

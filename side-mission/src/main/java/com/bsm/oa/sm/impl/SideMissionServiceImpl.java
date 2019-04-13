@@ -1,9 +1,11 @@
 package com.bsm.oa.sm.impl;
 
 import static com.bsm.oa.common.util.CollectionUtils.mapList;
+import static com.bsm.oa.common.util.CollectionUtils.partition;
 import static com.bsm.oa.common.util.CollectionUtils.streamOfNullable;
 import static com.bsm.oa.common.util.PageUtils.retrievePage;
 import static com.bsm.oa.sm.exception.SideMissionException.REQUIRED_PROOF_TYPES_NOT_MATCHED;
+import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_INVALID_RATER;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_PARAM_MISSING;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_PARAM_UNKNOWN;
 import static com.bsm.oa.sm.exception.SideMissionException.SIDE_MISSION_REPORT_NOT_EXISTS;
@@ -108,16 +110,28 @@ public class SideMissionServiceImpl implements SideMissionService {
     if (sideMissionRepository.hasRatedReport(userId, reportId)) {
       SIDE_MISSION_REPORT_RATED.raise();
     }
-    validatePerformParams(report.getMissionTypeId(), new HashMap<>(rates));
+    validatePerformParams(raterType, report.getMissionTypeId(), new HashMap<>(rates));
 
     sideMissionRepository.insertReportRate(userId, reportId, rates);
   }
 
-  private void validatePerformParams(@Valid @NotNull SideMissionTypeID missionTypeId,
+  private void validatePerformParams(@NotNull RaterType raterType,
+                                     @Valid @NotNull SideMissionTypeID missionTypeId,
                                      @Valid @NotEmpty Map<PerformParamSymbol, Double> rates) {
     var missionType = sideMissionRepository.getSideMissionType(missionTypeId);
 
-    missionType.getPerformParams().forEach(param ->
+    var paramsPartition = partition(missionType.getPerformParams(),
+      param -> raterType.equals(param.getToRateBy()));
+
+    var expectedParams = paramsPartition.get(true);
+    var unexpectedParams = paramsPartition.get(false);
+
+    unexpectedParams.forEach(param ->
+      of(param.getSymbol()).filter(rates::containsKey).ifPresent(symbol ->
+        SIDE_MISSION_INVALID_RATER.raise(symbol + " -> " + raterType.getOther()))
+    );
+
+    expectedParams.forEach(param ->
       of(param.getSymbol()).map(rates::remove)
         .ifPresentOrElse(rateValue -> validateRateValue(param, rateValue),
           () -> SIDE_MISSION_PARAM_MISSING.raise(param.getSymbol()))
@@ -126,7 +140,7 @@ public class SideMissionServiceImpl implements SideMissionService {
     if (isNotEmpty(rates.values())) {
       SIDE_MISSION_PARAM_UNKNOWN.raise(rates.keySet());
     }
-}
+  }
 
   private void validateRateValue(@Valid @NotNull PerformParam param, @NotNull Double value) {
     var validator = beanFactory.getBean(IPerformParamValidator.class, new Literal(param.getType()));

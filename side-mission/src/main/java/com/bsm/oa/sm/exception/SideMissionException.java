@@ -13,10 +13,10 @@ public enum SideMissionException implements Supplier<RuntimeException> {
   REQUIRED_PROOF_TYPES_NOT_MATCHED("Provided proof resource types do not meet requirements. "),
   SIDE_MISSION_REPORT_NOT_EXISTS("Side mission report does not exists."),
   SIDE_MISSION_REPORT_RATED("User has already rated that side mission report."),
+  SIDE_MISSION_INVALID_RATER("Parameter is intended to be rated by the other type of rater. "),
   SIDE_MISSION_PARAM_MISSING("Required side mission perform param not provided: "),
   SIDE_MISSION_PARAM_UNKNOWN("Unknown side mission perform params: "),
-  SIDE_MISSION_PARAM_INVALID("Invalid side mission perform param rate value. ")
-  ;
+  SIDE_MISSION_PARAM_INVALID("Invalid side mission perform param rate value. ");
 
   private final String message;
 
