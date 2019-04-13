@@ -31,7 +31,7 @@ import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
 import com.bsm.oa.sm.service.IPerformParamValidator;
-import com.bsm.oa.sm.service.SideMissionService;
+import com.bsm.oa.sm.service.ISideMissionService;
 import com.bsm.oa.user.service.UserService;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +51,7 @@ import org.springframework.validation.annotation.Validated;
 @Service
 @Validated
 @RequiredArgsConstructor
-public class SideMissionServiceImpl implements SideMissionService {
+public class SideMissionService implements ISideMissionService {
 
   private final SideMissionRepository sideMissionRepository;
   private final UserDetailsProvider userDetailsProvider;

@@ -15,4 +15,9 @@ public class SideMissionReportId implements ValueObject<Long> {
   public static SideMissionReportId of(@Min(1) @NotNull Long reportId) {
     return new SideMissionReportId(reportId);
   }
+
+  @Override
+  public String toString() {
+    return value.toString();
+  }
 }

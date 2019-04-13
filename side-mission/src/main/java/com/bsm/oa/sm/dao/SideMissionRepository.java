@@ -2,6 +2,7 @@ package com.bsm.oa.sm.dao;
 
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.sm.model.PerformParamSymbol;
+import com.bsm.oa.sm.model.ReportRateData;
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionReportFilter;
 import com.bsm.oa.sm.model.SideMissionReportId;
@@ -36,4 +37,9 @@ public interface SideMissionRepository {
   void insertReportRate(@Param("userId") UserId userId,
                         @Param("reportId") SideMissionReportId reportId,
                         @Param("rates") Map<PerformParamSymbol, Double> rates);
+
+  ReportRateData getReportRateData(SideMissionReportId reportId);
+
+  void mergeReportPoints(@Param("reportId") SideMissionReportId reportId,
+                         @Param("points") Double points);
 }
