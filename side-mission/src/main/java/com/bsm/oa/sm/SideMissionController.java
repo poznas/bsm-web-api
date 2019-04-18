@@ -10,7 +10,7 @@ import com.bsm.oa.sm.model.SideMissionReportId;
 import com.bsm.oa.sm.model.SideMissionType;
 import com.bsm.oa.sm.model.SideMissionTypeID;
 import com.bsm.oa.sm.request.ReportSideMissionRequest;
-import com.bsm.oa.sm.service.SideMissionService;
+import com.bsm.oa.sm.service.ISideMissionService;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
@@ -46,7 +46,7 @@ public class SideMissionController {
   private static final String SM_REPORT_RATE = SM_REPORT_ID + "/rate/{raterType}";
   private static final String SM_REPORTS = SM_REPORT + "/reports/{raterType}";
 
-  private final SideMissionService sideMissionService;
+  private final ISideMissionService sideMissionService;
 
   @PutMapping(SM_MISSION_TYPE)
   @PreAuthorize("hasAuthority('PRV_EDIT_SM')")

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface SideMissionService {
+public interface ISideMissionService {
 
   /**
    * Create or replace side mission type

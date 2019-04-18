@@ -124,6 +124,7 @@
     and not exists (select * from sm_report_rate
                               where report_id = r.report_id
                               and rater_user_id = #{raterId.value})
+    and p.team_id is not null
   </sql>
 
   <select id="selectReports" resultMap="SideMissionReportMap"
@@ -151,6 +152,7 @@
   <select id="selectReportsCount" resultType="long"
     parameterType="com.bsm.oa.sm.model.SideMissionReportFilter">
     select count(*) from side_mission_report r
+    left join users p on r.performing_user_id = p.user_id
     <include refid="reportFilterCriteria"/>
   </select>
 
@@ -180,5 +182,47 @@
       where report_id = #{reportId.value};
     </foreach>
   </insert>
+
+  <resultMap id="ReportRateDataMap" type="com.bsm.oa.sm.model.ReportRateData">
+    <result property="reportId" column="report_id" typeHandler="com.bsm.oa.common.mapper.LongVOHandler"/>
+    <result property="equation" column="equation" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <collection property="paramRates" ofType="com.bsm.oa.sm.model.PerformParamRate">
+      <result property="symbol" column="symbol" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="assignedValue" column="rate_avg"/>
+    </collection>
+  </resultMap>
+
+  <select id="getReportRateData" resultMap="ReportRateDataMap">
+    select
+      r.report_id,
+      t.equation,
+      param.equation_symbol as symbol,
+      case when count(*) >= requiredJudgeRatesCount()
+                or param.to_rate_by = 'PROFESSOR'
+        then avg(rate.rate_value)
+      else null end         as rate_avg
+    from side_mission_report r
+      natural join side_mission_type t
+      natural join side_mission_perform_param param
+      left join sm_report_rate rate
+        on param.sm_type_id = rate.sm_type_id
+           and param.equation_symbol = rate.perform_param_symbol
+           and r.report_id = rate.report_id
+    where rate.report_id = #{value}
+          and r.valid and not r.rated
+    group by r.report_id, t.equation, param.to_rate_by, param.equation_symbol
+  </select>
+
+  <update id="mergeReportPoints">
+    insert into points(points_id, points_type, points_amount, user_id, team_id)
+    select #{reportId.value}, 'SIDE_MISSION', #{points}, u.user_id, u.team_id
+    from side_mission_report r
+      join users u on r.performing_user_id = u.user_id
+    where r.report_id = #{reportId.value}
+    and u.team_id is not null
+
+    on conflict (points_id, points_type)
+    do update set points_amount = #{points}
+  </update>
 
 </mapper>
