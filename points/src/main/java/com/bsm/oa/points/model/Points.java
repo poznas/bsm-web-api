@@ -1,4 +1,4 @@
-package com.agh.oa.points.model;
+package com.bsm.oa.points.model;
 
 import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.common.model.User;
@@ -14,14 +14,14 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PointsDetails {
+public class Points {
 
   /**
    * points complex identifier
    */
   @Valid
   @NotNull
-  private PointsId id;
+  private PointsId pointsId;
 
   /**
    * points amount

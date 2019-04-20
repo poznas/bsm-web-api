@@ -21,7 +21,14 @@
           select 1 from USERS
             where user_id = #{userId.value}
         )
-    </select>
+   </select>
+
+  <select id="teamExists" parameterType="string" resultType="boolean">
+        select exists (
+          select 1 from team
+            where team_id = #{value}
+        )
+   </select>
 
   <select id="getPrivileges" resultType="com.bsm.oa.common.constant.Privilege">
         select privilege_id from PRIVILEGE where user_id = #{userId.value}

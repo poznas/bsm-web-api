@@ -1,6 +1,7 @@
 package com.bsm.oa.user.service;
 
 import com.bsm.oa.common.constant.Privilege;
+import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
 import java.util.List;
@@ -59,4 +60,11 @@ public interface UserService {
    * @param who message prefix specifying request field
    */
   void assertUserExists(@Valid @NotNull UserId userId, @NotBlank String who);
+
+  /**
+   * Throws BAD REQUEST exception if team does not exists
+   *
+   * @param teamId team identifier
+   */
+  void assertTeamExists(@Valid @NotNull TeamId teamId);
 }

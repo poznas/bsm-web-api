@@ -1,4 +1,4 @@
-package com.agh.oa.points.model;
+package com.bsm.oa.points.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

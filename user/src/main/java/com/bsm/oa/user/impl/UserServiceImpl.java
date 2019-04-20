@@ -6,6 +6,7 @@ import static java.util.Collections.emptySet;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import com.bsm.oa.common.constant.Privilege;
+import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.common.service.UserDetailsProvider;
@@ -78,6 +79,13 @@ public class UserServiceImpl implements UserService {
   public void assertUserExists(@Valid @NotNull UserId userId, @NotBlank String who) {
     if (!userRepository.userExists(userId)) {
       throw new ResponseStatusException(BAD_REQUEST, who + " does not exists");
+    }
+  }
+
+  @Override
+  public void assertTeamExists(@Valid @NotNull TeamId teamId) {
+    if (!userRepository.teamExists(teamId)) {
+      throw new ResponseStatusException(BAD_REQUEST, "team " + teamId + " does not exists");
     }
   }
 }

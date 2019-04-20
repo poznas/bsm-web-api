@@ -1,10 +1,10 @@
-package com.agh.oa.points;
+package com.bsm.oa.points;
 
-import static com.agh.oa.points.PointsController.CONTEXT;
+import static com.bsm.oa.points.PointsController.CONTEXT;
 
-import com.agh.oa.points.model.PointsDetails;
-import com.agh.oa.points.service.IPointsService;
 import com.bsm.oa.common.model.TeamId;
+import com.bsm.oa.points.model.Points;
+import com.bsm.oa.points.service.IPointsService;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +29,8 @@ public class PointsController {
   private final IPointsService pointsService;
 
   @GetMapping(TEAM_POINTS_PATH)
-  Page<PointsDetails> getTeamPoints(@PageableDefault Pageable pageable,
-                                    @Valid @NotNull @PathVariable("teamId") TeamId teamId) {
+  Page<Points> getTeamPoints(@PageableDefault Pageable pageable,
+                             @Valid @NotNull @PathVariable("teamId") TeamId teamId) {
     return pointsService.getTeamPoints(teamId, pageable);
   }
 

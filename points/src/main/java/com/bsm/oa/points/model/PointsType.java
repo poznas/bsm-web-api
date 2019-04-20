@@ -1,4 +1,4 @@
-package com.agh.oa.points.model;
+package com.bsm.oa.points.model;
 
 public enum PointsType {
   SIDE_MISSION,

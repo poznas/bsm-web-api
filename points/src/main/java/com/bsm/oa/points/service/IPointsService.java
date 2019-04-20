@@ -1,7 +1,7 @@
-package com.agh.oa.points.service;
+package com.bsm.oa.points.service;
 
-import com.agh.oa.points.model.PointsDetails;
 import com.bsm.oa.common.model.TeamId;
+import com.bsm.oa.points.model.Points;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,7 @@ public interface IPointsService {
   /**
    * @param teamId team identifier
    * @param pageable page request params
-   * @return paged list of team points details
+   * @return paged list of team points data
    */
-  Page<PointsDetails> getTeamPoints(@Valid @NotNull TeamId teamId, @NotNull Pageable pageable);
+  Page<Points> getTeamPoints(@Valid @NotNull TeamId teamId, @NotNull Pageable pageable);
 }

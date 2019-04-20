@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bsm.oa.points.dao.PointsRepository">
+
+  <resultMap id="PointsIdMap" type="com.bsm.oa.points.model.PointsId">
+    <constructor>
+      <arg column="points_type" javaType="com.bsm.oa.points.model.PointsType"/>
+      <arg column="points_id" javaType="Long"/>
+    </constructor>
+  </resultMap>
+
+  <resultMap id="PointsMap" type="com.bsm.oa.points.model.Points">
+    <result property="amount" column="points_amount"/>
+    <result property="shortLabel" column="points_short_label"/>
+    <result property="teamId" column="team_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="timestamp" column="insert_time"/>
+    <association property="pointsId" resultMap="PointsIdMap"/>
+    <association property="user">
+      <result property="userId" column="user_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="username" column="username" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="imageUrl" column="image_url" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="teamId" column="team_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    </association>
+  </resultMap>
+
+  <sql id="selectPointsColumns">
+    p.points_id,
+    p.points_type,
+    p.points_amount,
+    p.points_short_label,
+    p.insert_time,
+    p.team_id,
+    u.user_id,
+    u.username,
+    u.image_url
+  </sql>
+
+  <sql id="pointsFilterCriteria">
+    where p.valid and p.team_id = #{teamId.value}
+  </sql>
+
+  <select id="selectPoints" resultMap="PointsMap"
+    parameterType="com.bsm.oa.points.model.PointsFilter">
+    select
+    <include refid="selectPointsColumns"/>
+    from points p
+    natural left join users u
+    <include refid="pointsFilterCriteria"/>
+    order by p.insert_time
+    offset #{offset}
+    limit #{pageSize}
+  </select>
+
+  <select id="selectPointsCount" resultType="long" parameterType="com.bsm.oa.points.model.PointsFilter">
+    select count(*) from points p
+    <include refid="pointsFilterCriteria"/>
+  </select>
+
+
+</mapper>
