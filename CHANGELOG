@@ -1,3 +1,4 @@
+add mock API for GET /points/team/{teamId}
 eval and insert report points if enough rates
 create points table
 validate rater type, POST /side-mission/report/{id}/rate/{raterType}

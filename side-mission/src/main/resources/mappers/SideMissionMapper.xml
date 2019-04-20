@@ -222,7 +222,10 @@
     and u.team_id is not null
 
     on conflict (points_id, points_type)
-    do update set points_amount = #{points}
+    do update set points_amount = #{points};
+
+    update side_mission_report set rated = true
+    where report_id = #{reportId.value}
   </update>
 
 </mapper>

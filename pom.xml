@@ -21,6 +21,7 @@
         <module>common</module>
         <module>user</module>
       <module>side-mission</module>
+      <module>points</module>
     </modules>
 
     <licenses>
