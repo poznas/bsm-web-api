@@ -40,7 +40,7 @@
     where p.valid and p.team_id = #{teamId.value}
   </sql>
 
-  <select id="selectPoints" resultMap="PointsMap"
+  <select id="selectPoints" resultMap="PointsMap" useCache="false"
     parameterType="com.bsm.oa.points.model.PointsFilter">
     select
     <include refid="selectPointsColumns"/>
@@ -52,10 +52,33 @@
     limit #{pageSize}
   </select>
 
-  <select id="selectPointsCount" resultType="long" parameterType="com.bsm.oa.points.model.PointsFilter">
+  <select id="selectPointsCount" resultType="long"
+    parameterType="com.bsm.oa.points.model.PointsFilter" useCache="false">
     select count(*) from points p
     <include refid="pointsFilterCriteria"/>
   </select>
 
+  <resultMap id="TeamScoreMap" type="com.bsm.oa.points.model.TeamScore">
+    <result property="score" column="score"/>
+    <association property="team">
+      <result property="teamId" column="team_id" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+      <result property="displayName" column="team_name"/>
+      <result property="color" column="team_color" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    </association>
+  </resultMap>
+
+  <select id="getTotalTeamScores" resultMap="TeamScoreMap">
+    select
+      team_id,
+      team_name,
+      team_color,
+      sum(points_amount) as score
+    from team
+      natural join points
+    where playing and valid
+    group by team_id, team_name, team_color
+  </select>
+
+  <cache flushInterval="1000"/>
 
 </mapper>

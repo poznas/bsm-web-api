@@ -4,7 +4,9 @@ import static com.bsm.oa.points.PointsController.CONTEXT;
 
 import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.points.model.Points;
+import com.bsm.oa.points.model.TeamScore;
 import com.bsm.oa.points.service.IPointsService;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class PointsController {
 
   static final String CONTEXT = "/points";
   private static final String TEAM_POINTS_PATH = "/team/{teamId}";
+  private static final String TEAM_TOTAL_SCORES_PATH = "/scores";
 
   private final IPointsService pointsService;
 
@@ -32,6 +35,11 @@ public class PointsController {
   Page<Points> getTeamPoints(@PageableDefault Pageable pageable,
                              @Valid @NotNull @PathVariable("teamId") TeamId teamId) {
     return pointsService.getTeamPoints(teamId, pageable);
+  }
+
+  @GetMapping(TEAM_TOTAL_SCORES_PATH)
+  List<TeamScore> getTotalTeamScores() {
+    return pointsService.getTotalTeamScores();
   }
 
 }

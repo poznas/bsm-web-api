@@ -2,6 +2,7 @@ package com.bsm.oa.points.dao;
 
 import com.bsm.oa.points.model.Points;
 import com.bsm.oa.points.model.PointsFilter;
+import com.bsm.oa.points.model.TeamScore;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,4 +12,6 @@ public interface PointsRepository {
   List<Points> selectPoints(PointsFilter filter);
 
   long selectPointsCount(PointsFilter filter);
+
+  List<TeamScore> getTotalTeamScores();
 }

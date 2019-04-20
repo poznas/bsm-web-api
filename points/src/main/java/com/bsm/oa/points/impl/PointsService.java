@@ -5,8 +5,10 @@ import com.bsm.oa.common.util.PageUtils;
 import com.bsm.oa.points.dao.PointsRepository;
 import com.bsm.oa.points.model.Points;
 import com.bsm.oa.points.model.PointsFilter;
+import com.bsm.oa.points.model.TeamScore;
 import com.bsm.oa.points.service.IPointsService;
 import com.bsm.oa.user.service.UserService;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +34,10 @@ public class PointsService implements IPointsService {
 
     return PageUtils.retrievePage(filter, pageable, pointsRepository::selectPoints,
       pointsRepository::selectPointsCount);
+  }
+
+  @Override
+  public List<TeamScore> getTotalTeamScores() {
+    return pointsRepository.getTotalTeamScores();
   }
 }

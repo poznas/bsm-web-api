@@ -1,5 +1,6 @@
 package com.bsm.oa.common.model;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Team {
+public class Team implements Serializable {
 
   /**
    * Team identifier
