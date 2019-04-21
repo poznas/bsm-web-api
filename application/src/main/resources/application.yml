@@ -28,6 +28,9 @@ spring:
     enabled: false
   jackson:
     default-property-inclusion: non_null
+  cache:
+    caffeine:
+      spec: maximumSize=500, expireAfterAccess=60s
 
 #My batis
 mybatis:
@@ -48,3 +51,7 @@ aws:
   region: eu-central-1
   # aws user access token duration
   tokenDuration: 300
+
+dictionary-client:
+  ribbon:
+    listOfServers: localhost:5001

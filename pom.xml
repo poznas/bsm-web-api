@@ -70,6 +70,12 @@
 
         <!-- logging -->
         <zalando.logbook.version>1.5.0</zalando.logbook.version>
+
+        <!-- artifactory S3 -->
+        <s3.storage.wagon.version>1.0</s3.storage.wagon.version>
+
+        <!-- BSM dependencies -->
+        <bsm.dictionary.version>0.0.1</bsm.dictionary.version>
     </properties>
 
     <dependencies>
@@ -101,6 +107,18 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -194,6 +212,13 @@
     </dependencyManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>com.gkatzioura.maven.cloud</groupId>
+                <artifactId>s3-storage-wagon</artifactId>
+                <version>${s3.storage.wagon.version}</version>
+            </extension>
+        </extensions>
         <pluginManagement>
             <plugins>
                 <plugin>

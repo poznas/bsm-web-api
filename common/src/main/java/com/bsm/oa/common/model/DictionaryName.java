@@ -1,13 +1,13 @@
 package com.bsm.oa.common.model;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 import lombok.Value;
 
 @Value
 public class DictionaryName implements ValueObject<String> {
 
   @NotBlank
-  @Size(max = 128)
+  @Pattern(regexp = "[A-Z_]{1,128}")
   private String value;
 }

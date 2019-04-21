@@ -9,5 +9,13 @@
 
     <artifactId>common</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.bsm.dict</groupId>
+            <artifactId>dictionary-api</artifactId>
+            <version>${bsm.dictionary.version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
