@@ -54,7 +54,7 @@ public interface ISideMissionService {
    * Assign perform param rates to side mission report
    * @param reportId side mission report identifier
    * @param raterType rater type
-   * @param rates map of mission perform param symbol <-> assigned value
+   * @param rates map of mission perform param symbol - assigned value
    */
   void rateReport(@Valid @NotNull SideMissionReportId reportId, @NotNull RaterType raterType,
                   @Valid @NotEmpty Map<PerformParamSymbol, Double> rates);

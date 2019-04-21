@@ -20,6 +20,7 @@ public interface IPerformParamValidator {
   void validateRateValue(@Valid @NotNull PerformParam param, @NotNull Double value);
 
   /**
+   * @param <T> return type
    * @param param parameter definition
    * @param parser string converter
    * @return parsed available value source
