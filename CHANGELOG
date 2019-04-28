@@ -1,3 +1,4 @@
+fix get total team scores sql query
 connect remote dictionary service
 impl total score table supplier endpoint: GET /points/scores
 impl GET /points/team/{teamId}

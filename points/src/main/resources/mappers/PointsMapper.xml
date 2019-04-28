@@ -74,8 +74,8 @@
       team_color,
       sum(points_amount) as score
     from team
-      natural join points
-    where playing and valid
+      natural left join points
+    where playing and (points.valid or points.points_id is null)
     group by team_id, team_name, team_color
   </select>
 
