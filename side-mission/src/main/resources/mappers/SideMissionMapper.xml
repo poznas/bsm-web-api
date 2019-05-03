@@ -56,7 +56,7 @@
       insert into side_mission_perform_param
       (sm_type_id, equation_symbol, perform_param_type,
       to_rate_by, hint_dict_key, available_values_source)
-      values (#{typeId.value}, #{p.symbol.value}, #{p.type}, #{p.toJudgeBy}, #{p.hint.value},
+      values (#{typeId.value}, #{p.symbol.value}, #{p.type}, #{p.toRateBy}, #{p.hint.value},
       #{p.availableValuesSource});
     </foreach>
 
