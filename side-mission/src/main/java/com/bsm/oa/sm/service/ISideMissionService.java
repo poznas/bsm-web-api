@@ -1,6 +1,7 @@
 package com.bsm.oa.sm.service;
 
 import com.bsm.oa.sm.model.PerformParamSymbol;
+import com.bsm.oa.sm.model.ProofMediaLink;
 import com.bsm.oa.sm.model.RaterType;
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionReportId;
@@ -49,6 +50,12 @@ public interface ISideMissionService {
    */
   Page<SideMissionReport> getSideMissionReports(@NotNull RaterType toRateBy,
                                                 @NotNull Pageable pageable);
+
+  /**
+   * @param reportId side mission report identifier
+   * @return side mission proof media links
+   */
+  List<ProofMediaLink> getReportProofs(@Valid @NotNull SideMissionReportId reportId);
 
   /**
    * Assign perform param rates to side mission report

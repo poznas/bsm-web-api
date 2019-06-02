@@ -167,6 +167,16 @@
     </foreach>
   </insert>
 
+  <resultMap id="ReportProofMap" type="com.bsm.oa.sm.model.ProofMediaLink">
+    <result property="awsS3Url" column="proof_url" typeHandler="com.bsm.oa.common.mapper.StringVOHandler"/>
+    <result property="type" column="proof_type" />
+  </resultMap>
+
+  <select id="getReportProofs" resultMap="ReportProofMap">
+    select proof_url, proof_type from side_mission_report_proof
+    where report_id = #{reportId.value}
+  </select>
+
   <select id="hasRatedReport" resultType="boolean">
     select exists (
     select * from sm_report_rate

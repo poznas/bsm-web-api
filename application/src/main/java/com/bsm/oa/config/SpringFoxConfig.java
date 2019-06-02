@@ -28,7 +28,7 @@ public class SpringFoxConfig {
 
   private ApiInfo getApiInfo() {
     return new ApiInfo(
-      "BSM Open REST Api",
+      "BSM Open Api",
       "Bulgarian School of Magic Software Fundation",
       null,
       null,

@@ -100,6 +100,11 @@ public class SideMissionService implements ISideMissionService {
   }
 
   @Override
+  public List<ProofMediaLink> getReportProofs(@Valid @NotNull SideMissionReportId reportId) {
+    return sideMissionRepository.getReportProofs(reportId);
+  }
+
+  @Override
   public void rateReport(@Valid @NotNull SideMissionReportId reportId, @NotNull RaterType raterType,
                          @Valid @NotEmpty Map<PerformParamSymbol, Double> rates) {
     var report = of(reportId).map(sideMissionRepository::selectReport)

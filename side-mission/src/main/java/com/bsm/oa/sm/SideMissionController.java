@@ -4,6 +4,7 @@ package com.bsm.oa.sm;
 import static com.bsm.oa.sm.SideMissionController.SM_CONTEXT;
 
 import com.bsm.oa.sm.model.PerformParamSymbol;
+import com.bsm.oa.sm.model.ProofMediaLink;
 import com.bsm.oa.sm.model.RaterType;
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionReportId;
@@ -43,6 +44,7 @@ public class SideMissionController {
   private static final String SM_MISSION_TYPES = SM_MISSION_TYPE + "/types";
   private static final String SM_REPORT = "/report";
   private static final String SM_REPORT_ID = SM_REPORT + "/{reportId}";
+  private static final String SM_REPORT_PROOFS = SM_REPORT_ID + "/proofs";
   private static final String SM_REPORT_RATE = SM_REPORT_ID + "/rate/{raterType}";
   private static final String SM_REPORTS = SM_REPORT + "/reports/{raterType}";
 
@@ -73,10 +75,15 @@ public class SideMissionController {
 
   @GetMapping(SM_REPORTS)
   @PreAuthorize("hasAuthority('PRV_' + #raterType + '_RATE_SM')")
-  public Page<SideMissionReport> getReportsForJudge(@PageableDefault Pageable pageable,
-                                                    @NotNull @PathVariable("raterType") RaterType raterType
+  public Page<SideMissionReport> getReportsForRate(@PageableDefault Pageable pageable,
+                                                   @NotNull @PathVariable("raterType") RaterType raterType
   ) {
     return sideMissionService.getSideMissionReports(raterType, pageable);
+  }
+
+  @GetMapping(SM_REPORT_PROOFS)
+  public List<ProofMediaLink> getReportProofs(@NotNull @PathVariable("reportId") Long reportId) {
+    return sideMissionService.getReportProofs(SideMissionReportId.of(reportId));
   }
 
   @PostMapping(SM_REPORT_RATE)

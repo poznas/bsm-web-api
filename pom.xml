@@ -12,7 +12,7 @@
     <artifactId>open-api</artifactId>
     <version>0.0.32-SNAPSHOT</version>
     <name>bsm-open-api</name>
-    <description>BSM Open REST API</description>
+    <description>BSM Open API</description>
     <url>https://github.com/poznas/bsm-open-api</url>
 
     <modules>

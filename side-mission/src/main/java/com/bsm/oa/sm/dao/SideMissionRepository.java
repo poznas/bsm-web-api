@@ -2,6 +2,7 @@ package com.bsm.oa.sm.dao;
 
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.sm.model.PerformParamSymbol;
+import com.bsm.oa.sm.model.ProofMediaLink;
 import com.bsm.oa.sm.model.ReportRateData;
 import com.bsm.oa.sm.model.SideMissionReport;
 import com.bsm.oa.sm.model.SideMissionReportFilter;
@@ -28,6 +29,8 @@ public interface SideMissionRepository {
   SideMissionReport selectReport(SideMissionReportId reportId);
 
   List<SideMissionReport> selectReports(SideMissionReportFilter filter);
+
+  List<ProofMediaLink> getReportProofs(@Param("reportId") SideMissionReportId reportId);
 
   long selectReportsCount(SideMissionReportFilter filter);
 
