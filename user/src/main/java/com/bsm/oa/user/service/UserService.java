@@ -1,6 +1,7 @@
 package com.bsm.oa.user.service;
 
 import com.bsm.oa.common.constant.Privilege;
+import com.bsm.oa.common.model.Team;
 import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
@@ -52,6 +53,12 @@ public interface UserService {
    * @return users assigned to the same team as the current user
    */
   List<User> getTeammates();
+
+  /**
+   * @param teamId user team identifier
+   * @return team details
+   */
+  Team getTeam(TeamId teamId);
 
   /**
    * Throws BAD REQUEST exception if user does not exists

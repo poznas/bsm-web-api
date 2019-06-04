@@ -3,6 +3,8 @@ package com.bsm.oa.user;
 import static com.bsm.oa.user.UserController.USER_CONTEXT;
 
 import com.bsm.oa.common.constant.Privilege;
+import com.bsm.oa.common.model.Team;
+import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
 import com.bsm.oa.user.service.UserService;
@@ -12,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings("squid:S1075")
 
-@Validated
 @RestController
 @RequestMapping(USER_CONTEXT)
 @RequiredArgsConstructor
@@ -32,6 +32,8 @@ public class UserController {
   private static final String USER_PRIVILEGES_PATH = "/{userId}/privileges";
   private static final String USER_MY_PRIVILEGES_PATH = "/my-privileges";
   private static final String USER_TEAMMATES_PATH = "/users/teammates";
+
+  private static final String USER_TEAM_PATH = "team/{teamId}";
 
   private final UserService userService;
 
@@ -56,6 +58,11 @@ public class UserController {
   @GetMapping(USER_TEAMMATES_PATH)
   public List<User> getTeammates() {
     return userService.getTeammates();
+  }
+
+  @GetMapping(USER_TEAM_PATH)
+  public Team getTeam(@NotBlank @PathVariable("teamId") TeamId teamId) {
+    return userService.getTeam(teamId);
   }
 
 }

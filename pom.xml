@@ -11,9 +11,9 @@
     <groupId>com.bsm</groupId>
     <artifactId>open-api</artifactId>
     <version>0.0.33-SNAPSHOT</version>
-    <name>bsm-open-api</name>
-    <description>BSM Open API</description>
-    <url>https://github.com/poznas/bsm-open-api</url>
+    <name>bsm-web-api</name>
+    <description>BSM Web API</description>
+    <url>https://github.com/poznas/bsm-web-api</url>
 
     <modules>
         <module>application</module>

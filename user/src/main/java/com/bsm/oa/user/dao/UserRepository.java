@@ -1,6 +1,7 @@
 package com.bsm.oa.user.dao;
 
 import com.bsm.oa.common.constant.Privilege;
+import com.bsm.oa.common.model.Team;
 import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
@@ -24,6 +25,8 @@ public interface UserRepository {
   void clearPrivileges(@Param("userId") UserId userId);
 
   List<User> getTeammates(@Param("userId") UserId userId);
+
+  Team getTeam(TeamId teamId);
 
   boolean teamExists(TeamId teamId);
 }

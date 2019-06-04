@@ -6,6 +6,7 @@ import static java.util.Collections.emptySet;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import com.bsm.oa.common.constant.Privilege;
+import com.bsm.oa.common.model.Team;
 import com.bsm.oa.common.model.TeamId;
 import com.bsm.oa.common.model.User;
 import com.bsm.oa.common.model.UserId;
@@ -73,6 +74,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<User> getTeammates() {
     return userRepository.getTeammates(userDetailsProvider.getUserId());
+  }
+
+  @Override
+  public Team getTeam(TeamId teamId) {
+    return userRepository.getTeam(teamId);
   }
 
   @Override
